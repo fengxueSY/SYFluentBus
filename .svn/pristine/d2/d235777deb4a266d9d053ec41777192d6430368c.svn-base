@@ -1,0 +1,23 @@
+//
+//  FBMyOrderDetailsUpView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderDetailsUpView.h"
+
+@implementation FBMyOrderDetailsUpView
+-(void)setDetailsModel:(FBMyOrderDetailsModel *)detailsModel{
+    self.startLabel.text = detailsModel.staName;
+    self.endLabel.text = detailsModel.endName;
+    self.carTimeLabel.text = detailsModel.time;
+    self.moneyLabel.text = [NSString stringWithFormat:@"￥%.2f",[detailsModel.orderDisAmount floatValue] / 100];
+    self.validityLabel.text = [PublicMethod getTimeString_13:detailsModel.validDate];
+    self.startOnlyLabel.text = detailsModel.staName;
+    self.timeLabel.text = detailsModel.putime;
+    self.distanceLabel.text = detailsModel.ralen;
+    self.passByLabel.text = [NSString stringWithFormat:@"途径:%@",detailsModel.rdesc];
+}
+@end

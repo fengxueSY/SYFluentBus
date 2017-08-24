@@ -1,0 +1,72 @@
+//
+//  FBNeedViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBNeedViewController.h"
+#import "FBNeedListTableViewCell.h"
+#import "FBNewNeedViewController.h"
+
+
+@interface FBNeedViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property(nonatomic,strong) UITableView *tableView;
+
+@end
+
+@implementation FBNeedViewController
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTitle:@"发起新需求" target:self action:@selector(toMakeNewNeed)];
+    //布局tableView
+    [self creatBaseUI];
+}
+
+//发起新需求
+- (void)toMakeNewNeed
+{
+     [self.navigationController pushViewController:[FBNewNeedViewController new] animated:YES];
+}
+
+//布局tableView
+-(void)creatBaseUI{
+    
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.estimatedRowHeight = 139;
+    self.tableView.backgroundColor = UIColorFromRGB(0xF5F5F5);
+    [self.view addSubview:_tableView];
+}
+
+#pragma mark - tableView代理
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 20;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    FBNeedListTableViewCell * cell = [FBNeedListTableViewCell cellTableView:tableView];
+    cell.testTitle = @"途径：高铺";
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

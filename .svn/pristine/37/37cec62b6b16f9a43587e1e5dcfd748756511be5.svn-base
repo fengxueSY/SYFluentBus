@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="FBThreeTypeView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="07:20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwu-ny-maQ">
+                    <rect key="frame" x="8" y="8" width="37.5" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="UYl-hl-wzU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="粤A88888" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mq9-iX-mRc">
+                    <rect key="frame" x="291.5" y="8" width="67.5" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="fUt-aA-9t1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="有效期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWJ-4I-F6r">
+                    <rect key="frame" x="8" y="32" width="43" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="G7e-mF-MLz"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="有效期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORr-0t-0vF">
+                    <rect key="frame" x="316" y="34" width="43" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="出发站点" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZV6-hQ-dbb">
+                    <rect key="frame" x="8" y="56" width="57.5" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="tgz-7E-SPQ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="有效期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzO-lE-kSP">
+                    <rect key="frame" x="316" y="58" width="43" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_ticket_month" translatesAutoresizingMaskIntoConstraints="NO" id="d3R-10-LWI">
+                    <rect key="frame" x="258.5" y="10" width="25" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="8X8-co-ChG"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="mwu-ny-maQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="4Ze-Fv-pC1"/>
+                <constraint firstItem="mq9-iX-mRc" firstAttribute="centerY" secondItem="mwu-ny-maQ" secondAttribute="centerY" id="6Rd-h4-sBd"/>
+                <constraint firstItem="ZV6-hQ-dbb" firstAttribute="top" secondItem="jWJ-4I-F6r" secondAttribute="bottom" constant="3" id="8i9-nA-U4n"/>
+                <constraint firstItem="fzO-lE-kSP" firstAttribute="centerY" secondItem="ZV6-hQ-dbb" secondAttribute="centerY" id="9v1-l6-igZ"/>
+                <constraint firstItem="ZV6-hQ-dbb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="FKY-Tr-Lu5"/>
+                <constraint firstAttribute="trailing" secondItem="ORr-0t-0vF" secondAttribute="trailing" constant="16" id="MyA-gf-fhU"/>
+                <constraint firstAttribute="trailing" secondItem="fzO-lE-kSP" secondAttribute="trailing" constant="16" id="bYK-MT-dXa"/>
+                <constraint firstItem="jWJ-4I-F6r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="bYn-dF-Kme"/>
+                <constraint firstAttribute="trailing" secondItem="mq9-iX-mRc" secondAttribute="trailing" constant="16" id="h7d-o6-xh1"/>
+                <constraint firstItem="mwu-ny-maQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="mCQ-AD-wKk"/>
+                <constraint firstItem="d3R-10-LWI" firstAttribute="centerY" secondItem="mwu-ny-maQ" secondAttribute="centerY" id="pmn-yb-RiJ"/>
+                <constraint firstItem="jWJ-4I-F6r" firstAttribute="top" secondItem="mwu-ny-maQ" secondAttribute="bottom" constant="3" id="sag-X0-i09"/>
+                <constraint firstItem="ORr-0t-0vF" firstAttribute="centerY" secondItem="jWJ-4I-F6r" secondAttribute="centerY" id="v1l-Fj-HYJ"/>
+                <constraint firstItem="mq9-iX-mRc" firstAttribute="leading" secondItem="d3R-10-LWI" secondAttribute="trailing" constant="8" id="xTz-tw-YOs"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="carNumberLabel" destination="mq9-iX-mRc" id="S1x-8Q-v2O"/>
+                <outlet property="monthTypeImageView" destination="d3R-10-LWI" id="xjJ-8A-I4i"/>
+                <outlet property="startLabel" destination="ZV6-hQ-dbb" id="Pmh-XP-i6r"/>
+                <outlet property="startNameLabel" destination="fzO-lE-kSP" id="Ejr-s4-hql"/>
+                <outlet property="timeLabel" destination="mwu-ny-maQ" id="mtX-tQ-4eW"/>
+                <outlet property="validLabel" destination="jWJ-4I-F6r" id="H5P-Jb-E5t"/>
+                <outlet property="validTimeLabel" destination="ORr-0t-0vF" id="LvH-NK-pSA"/>
+            </connections>
+            <point key="canvasLocation" x="-48" y="-41"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="common_ticket_month" width="25" height="15"/>
+    </resources>
+</document>

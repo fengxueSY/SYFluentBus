@@ -1,0 +1,21 @@
+//
+//  FBMyOrderDetailsModel.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/13.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBMyOrderDetailsModel.h"
+
+@implementation FBMyOrderDetailsModel
++(void)userOrderDetailsOrderID:(NSString *)orderID Success:(void (^)(id))seccess Fail:(void (^)(id))fail{
+    [OCNetworkingTool POSTWithUrl:userOrderDetails() withParams:@{@"orderId":orderID} success:^(id responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        FBMyOrderDetailsModel * model = [FBMyOrderDetailsModel yy_modelWithDictionary:[dic objectForKey:@"data"]];
+        seccess(model);
+    } fail:^(NSError *error) {
+        fail(@"数据请求失败");
+    }];
+}
+@end

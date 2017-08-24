@@ -1,0 +1,14 @@
+//
+//  FBResumeModel.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/4.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBResumeModel : NSObject
++(void)getUserInfoSuccess:(void(^)(id successed))success Fail:(void(^)(id failed))fail;
+
+@end

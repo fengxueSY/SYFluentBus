@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="FBApplyForRefundCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订单号：123456789123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GUj-eT-Liq">
+                        <rect key="frame" x="8" y="15" width="155.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYW-Fd-Mwt">
+                        <rect key="frame" x="287" y="11.5" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="Pov-j9-jL8"/>
+                            <constraint firstAttribute="height" constant="25" id="lx7-z1-w1y"/>
+                        </constraints>
+                        <state key="normal" image="common_icon_newcalendar"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订单号：123456789123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u4t-Ms-4q2">
+                        <rect key="frame" x="156.5" y="15" width="155.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="GUj-eT-Liq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="6VD-j7-Ao0"/>
+                    <constraint firstItem="u4t-Ms-4q2" firstAttribute="centerY" secondItem="GUj-eT-Liq" secondAttribute="centerY" id="Gd0-gM-bk1"/>
+                    <constraint firstAttribute="trailing" secondItem="SYW-Fd-Mwt" secondAttribute="trailing" constant="8" id="NQT-Vm-1W2"/>
+                    <constraint firstAttribute="trailing" secondItem="u4t-Ms-4q2" secondAttribute="trailing" constant="8" id="RRM-sC-Sya"/>
+                    <constraint firstItem="GUj-eT-Liq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="eAa-U1-alJ"/>
+                    <constraint firstItem="SYW-Fd-Mwt" firstAttribute="centerY" secondItem="GUj-eT-Liq" secondAttribute="centerY" id="eDz-ae-hOg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="calendarButton" destination="SYW-Fd-Mwt" id="KD4-oU-ndm"/>
+                <outlet property="changeLineC" destination="RRM-sC-Sya" id="qUV-Sh-TYc"/>
+                <outlet property="laterLabel" destination="u4t-Ms-4q2" id="tTg-3w-6rr"/>
+                <outlet property="leadingLabel" destination="GUj-eT-Liq" id="Y2k-cb-1GQ"/>
+            </connections>
+            <point key="canvasLocation" x="-89" y="-115"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="common_icon_newcalendar" width="10" height="10"/>
+    </resources>
+</document>

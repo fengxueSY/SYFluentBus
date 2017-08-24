@@ -1,0 +1,28 @@
+//
+//  FBMyOrderCell.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface FBMyOrderCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *upBackLabel;
+@property (weak, nonatomic) IBOutlet UILabel *orderNmuberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *payStyleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *startLabel;
+@property (weak, nonatomic) IBOutlet UILabel *endLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nowTimeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *monthlyTicketImageView;
+@property (weak, nonatomic) IBOutlet UILabel *moneyLabel;
+@property (weak, nonatomic) IBOutlet UILabel *effectiveTimeLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *startStationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *orderTimeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *cancalButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *goPayButton;
+
+@end

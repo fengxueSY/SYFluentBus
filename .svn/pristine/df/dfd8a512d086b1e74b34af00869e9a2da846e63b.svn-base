@@ -1,0 +1,39 @@
+//
+//  FBSetPasswordViewController.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 17/1/3.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBSetPasswordViewController.h"
+
+@interface FBSetPasswordViewController ()
+
+@end
+
+@implementation FBSetPasswordViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.title = @"设置密码";
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    
+}
+
+-(void)goBack{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+@end

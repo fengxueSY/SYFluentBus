@@ -1,0 +1,205 @@
+//
+//  RegisterViewController.m
+//  OfficialCar
+//
+//  Created by 张俊辉 on 16/9/1.
+//  Copyright © 2016年 张俊辉. All rights reserved.
+//
+
+#import "RegisterViewController.h"
+
+
+@interface RegisterViewController ()
+{
+    NSInteger _second;
+    NSTimer *_timer;
+}
+
+//底部的view 为了加手势
+@property (weak, nonatomic) IBOutlet UIView *bottomBigView;
+
+@property (weak, nonatomic) IBOutlet UITextField *phoneNumberTF;
+@property (weak, nonatomic) IBOutlet UITextField *codeTF;
+@property (weak, nonatomic) IBOutlet UITextField *passWordTF;
+@property (weak, nonatomic) IBOutlet UITextField *confirmPassWordTF;
+@property (weak, nonatomic) IBOutlet UIButton *codeBtn;
+@property (weak, nonatomic) IBOutlet UILabel *codeLabel;
+
+@end
+
+@implementation RegisterViewController
+
+- (void)dealloc
+{
+    _timer = nil;
+}
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    
+    [self setUpUI];
+}
+
+-(void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)setUpUI
+{
+    self.title = @"注册";
+    //手势，点击结束编辑
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyboard)];
+    [self.bottomBigView addGestureRecognizer:tap];
+}
+
+-(void)hideKeyboard
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    [window endEditing:YES];
+}
+
+
+//获取验证码
+- (IBAction)getCodeBtn:(id)sender {
+    
+    if (![PublicMethod isNetworkEnabled]) {
+        
+        [MBProgressHUD showError:@"网络出错!"];
+        return;
+    }
+    
+    [self hideKeyboard];
+    
+    if(!StringNotNilAndNull(_phoneNumberTF.text)) {
+        [MBProgressHUD showError:@"手机号码不能为空"];
+        return;
+    }
+
+    if (![_phoneNumberTF.text checkPhoneNumberInput] ) {
+        [MBProgressHUD showError:@"请输入正确的手机号码"];
+        return;
+    }
+    
+    //网络请求
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:_phoneNumberTF.text forKey:@"mobile"];
+    
+     WeakSelf(weakSelf);
+    
+    [OCNetworkingTool POSTWithUrl:getVode() withParams:params success:^(id responseObject) {
+        
+        DBLog(@"%@",responseObject);
+        if ([responseObject[@"code"] integerValue] == 1000) {
+            [MBProgressHUD showError:@"验证码已发送，请稍后再试"];
+        }
+        if ([[responseObject objectForKey:@"success"] intValue] == 1) {
+            weakSelf.codeLabel.textColor = [UIColor lightGrayColor];
+            _second = 120;
+            
+            if (_timer) {
+                [_timer fire];
+            } else {
+                _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timing) userInfo:nil repeats:YES];
+            }
+        }else{
+            
+        }
+
+    } fail:^(NSError *error) {
+        DBLog(@"%@",error);
+        [MBProgressHUD showError:@"网络有问题,请稍后再试!"];
+    }];
+    
+}
+
+//定时器
+- (void)timing
+{
+    _second--;                                                      // 时间递减
+    NSString *title = [NSString stringWithFormat:@"%ld秒后重发", (long)_second];
+    _codeLabel.text = title;      // 修改按钮文字模拟计时
+    
+    if (_second < 1) {
+        [_timer invalidate];
+        _codeLabel.text = @"获取验证码";
+        _codeLabel.textColor = [UIColor colorWithRed:40/255.0 green:130/255.0 blue:224/255.0 alpha:1];
+        _timer = nil;
+    }                          // 倒计时到0时取消计时器
+    _codeBtn.enabled = _second < 1;
+}
+
+//注册按钮
+- (IBAction)RegisterBtn:(id)sender {
+    
+    if (![PublicMethod isNetworkEnabled]) {
+        
+        [MBProgressHUD showError:@"网络出错!"];
+        return;
+    }
+    
+    [self hideKeyboard];
+    if(!StringNotNilAndNull(_phoneNumberTF.text)) {
+        [MBProgressHUD showError:@"手机号码不能为空"];
+        return;
+    }
+    if (!StringNotNilAndNull(_codeTF.text)) {
+        [MBProgressHUD showError:@"验证码不能为空"];
+        return;
+    }
+    if (!StringNotNilAndNull(_passWordTF.text)) {
+        [MBProgressHUD showError:@"密码不能为空"];
+        return;
+    }
+    if (!StringNotNilAndNull(_confirmPassWordTF.text)) {
+        [MBProgressHUD showError:@"确认密码不能为空"];
+        return;
+    }
+    if (![_phoneNumberTF.text checkPhoneNumberInput] ) {
+        [MBProgressHUD showError:@"请输入正确的手机号码"];
+        return;
+    }
+    if (![_passWordTF.text isEqualToString:_confirmPassWordTF.text])
+    {
+        [MBProgressHUD showError:@"密码与确认密码不一致"];
+        return;
+    }
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    
+    [dict setValue:_passWordTF.text forKey:@"pwd"];
+    [dict setValue:_phoneNumberTF.text forKey:@"mobile"];
+    [dict setValue:_codeTF.text forKey:@"vCode"];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer new];
+    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/html",nil];
+    
+    NSDictionary *headerDict = @{@"appid":@"100000",@"sid":@"101879", @"sign":@"",@"tag":@"",@"tokenid":@"",@"version":@""};
+   
+    NSString *string  =[PublicMethod jsonEncapsulateWithDictionary:headerDict];
+    
+    [manager.requestSerializer setValue:string forHTTPHeaderField:@"rqs-header"];
+    DBLog(@"%@",manager.requestSerializer.HTTPRequestHeaders);
+
+    [manager POST:@"/affairs-api/user/create" parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        if ([responseObject[@"code"] integerValue]==1000) {
+            [MBProgressHUD showError:@"用户名已存在"];
+        }else if ([responseObject[@"code"] integerValue]== 551){
+            [MBProgressHUD showError:@"验证码不正确"];
+        }else if ([responseObject[@"code"] integerValue]== 200){
+            [MBProgressHUD showSuccess:@"注册成功"];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [MBProgressHUD showError:@"网络有问题,请稍后再试!"];
+    }];
+}
+
+@end

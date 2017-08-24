@@ -1,0 +1,26 @@
+//
+//  FBNeedListRouteModel.h
+//  FluentBus
+//
+//  Created by 张俊辉 on 17/1/9.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBNeedListRouteModel : NSObject
+
+@property (nonatomic,assign) NSInteger staindex;
+@property (nonatomic,copy) NSString *sname;
+@property (nonatomic,copy) NSString * isUpStation;/**<是否是起始站点*/
+@property (nonatomic,copy) NSString * mlng;/**<lng*/
+@property (nonatomic,copy) NSString * ctime;/**<创建时间*/
+@property (nonatomic,copy) NSString * distance;/**<距离*/
+@property (nonatomic,copy) NSString * mlat;/**<lat*/
+@property (nonatomic,copy) NSString * stationId;/**<站点ID*/
+@property (nonatomic,copy) NSString * rid;/**<线路ID*/
+@property (nonatomic,copy) NSString * sid;/**<lat*/
+
++(void)getAppStationLineRid:(NSString *)rid Success:(void(^)(id successed))seccess Fail:(void(^)(id failed))fail;
+
+@end

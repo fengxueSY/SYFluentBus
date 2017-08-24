@@ -1,0 +1,19 @@
+//
+//  FBResumeModel.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/4.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBResumeModel.h"
+
+@implementation FBResumeModel
++(void)getUserInfoSuccess:(void (^)(id))success Fail:(void (^)(id))fail{
+//    [OCNetworkingTool POSTWithUrl:getUserInfo() withParams:[UserInfo userInfoWithUserDefaults]. success:^(id responseObject) {
+//        
+//    } fail:^(NSError *error) {
+//        
+//    }];
+}
+@end

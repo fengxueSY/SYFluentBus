@@ -1,0 +1,19 @@
+//
+//  FBRouteViewController.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBBaseViewController.h"
+#import "FBNeedListModel.h"
+#import "FBOrderProductsShiftsModel.h"
+@interface FBRouteViewController : FBBaseViewController
+@property (nonatomic,strong) NSString * viewStyle;/**<1，线路预览界面。2,订票界面。3.地图导航界面*/
+
+//报名传值
+@property (nonatomic,strong)FBNeedListModel *needListModel;
+@property (nonatomic,strong) FBOrderProductsShiftsModel * productsShiftsModel;
+
+@end

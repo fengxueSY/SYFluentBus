@@ -1,0 +1,32 @@
+//
+//  PrefixHeader.pch
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/26.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "FBTranslator.h"//预编译
+#import "FBString.h"//固定字符串
+#import "WCAlertView.h"//封装的alertView
+#import "EMSearchBar.h"//可自定义“取消”字样的搜索框
+#import "BPCWay.h"//定义一些C写的方法
+#import "PublicMethod.h"//公共类的一些方法
+#import "YYModel.h"//解析数据
+#import "MJRefresh.h"//刷新
+#import "UserInfo.h"//用户数据
+#import "HeaderInfo.h"//网络请求的请求头处理  ------->>>>> 是否需要待定
+#import "HYBNetworking.h"//网络请求
+#import <AFNetworking.h>
+#import "MBProgressHUD+GS.h"//顶部或底部显示刷新文字
+#import "FBNSStringURL.h"//url
+//地图相关
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <MAMapKit/MAMapKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+
+
+#endif /* PrefixHeader_pch */

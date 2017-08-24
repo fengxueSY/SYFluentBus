@@ -1,0 +1,123 @@
+//
+//  FBTakeBusViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTakeBusViewController.h"
+#import "FBTakeBusCollectionViewCell.h"
+
+@interface FBTakeBusViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+
+@property (nonatomic,strong) UICollectionView *collectionView;
+
+@property (nonatomic,strong) UICollectionViewFlowLayout *flowLayout;
+
+@property (nonatomic,strong) NSMutableArray *collectionDataSource;
+
+@end
+
+@implementation FBTakeBusViewController
+
+static NSString *Identifier = @"mytakeBusCell";
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_icon_nav" target:self action:@selector(toMap)];
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithTitle:@"储值卡" target:self action:@selector(toStoredValueCard)];
+    
+    [self setCollectionView];
+}
+
+//地图跳转
+-(void)toMap
+{
+    
+}
+
+//储值卡跳转
+-(void)toStoredValueCard
+{
+    
+}
+
+- (void)setCollectionView
+{
+    // 设置flowLayout
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT-64-44);
+    self.flowLayout.minimumLineSpacing = 0;
+    self.flowLayout.minimumInteritemSpacing = 0;
+    
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.flowLayout];
+    
+    self.collectionView.backgroundColor = UIColorFromRGB(0xf5f5f5);
+    
+    self.collectionView.pagingEnabled = YES;
+    // 设置collectionView
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate   = self;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"FBTakeBusCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:Identifier];
+    [self.view addSubview:self.collectionView];
+    
+    //约束_taskTableView
+    WeakSelf(weakSelf);
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.mas_equalTo(weakSelf.view);
+        
+    }];
+}
+
+#pragma mark - collectionView代理
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 10;//self.collectionDataSource.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FBTakeBusCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:Identifier forIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma - mark 懒加载
+-(NSMutableArray *)collectionDataSource
+{
+    if (_collectionDataSource == nil) {
+        _collectionDataSource = [NSMutableArray array];
+    }
+    return _collectionDataSource;
+}
+
+- (UICollectionViewFlowLayout *)flowLayout {
+    if (_flowLayout == nil) {
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    }
+    return _flowLayout;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+@end

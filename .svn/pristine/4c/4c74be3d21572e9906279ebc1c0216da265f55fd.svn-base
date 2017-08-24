@@ -1,0 +1,27 @@
+//
+//  FBMidTableViewCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMidTableViewCell.h"
+
+@implementation FBMidTableViewCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+    self.timeLabel.hidden = YES;
+    self.touchButton.hidden = YES;
+    self.changeImageView.userInteractionEnabled = NO;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

@@ -1,0 +1,22 @@
+//
+//  FBOrderCellCollectionCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/5.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBOrderCellCollectionCell.h"
+
+@implementation FBOrderCellCollectionCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self.backView.layer setBorderColor:greenUnifyColor.CGColor];
+    [self.backView.layer setBorderWidth:1];
+}
+-(void)setProductsShiftsModel:(FBOrderProductsShiftsModel *)productsShiftsModel{
+     
+}
+
+@end

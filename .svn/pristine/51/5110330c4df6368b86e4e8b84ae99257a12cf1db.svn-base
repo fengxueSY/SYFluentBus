@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FBTopUpCardViewController">
+            <connections>
+                <outlet property="backView" destination="CYi-4U-GSC" id="uZj-bI-rcA"/>
+                <outlet property="disImageView" destination="ELV-mE-Xrc" id="l0b-dg-l96"/>
+                <outlet property="toUpBut" destination="hSi-0c-AGK" id="dRF-3p-wK4"/>
+                <outlet property="topUpButton" destination="hSi-0c-AGK" id="b3u-8T-jtS"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYi-4U-GSC">
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test" translatesAutoresizingMaskIntoConstraints="NO" id="ELV-mE-Xrc">
+                            <constraints>
+                                <constraint firstAttribute="width" constant="160" id="6st-bN-Jxp"/>
+                                <constraint firstAttribute="height" constant="160" id="nhB-7I-E2P"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="ELV-mE-Xrc" secondAttribute="bottom" id="A85-sy-vqo"/>
+                        <constraint firstAttribute="height" constant="160" id="ZXc-fk-90B"/>
+                        <constraint firstItem="ELV-mE-Xrc" firstAttribute="top" secondItem="CYi-4U-GSC" secondAttribute="top" id="g3b-A1-L03"/>
+                        <constraint firstItem="ELV-mE-Xrc" firstAttribute="centerX" secondItem="CYi-4U-GSC" secondAttribute="centerX" id="iIn-bK-pDa"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSi-0c-AGK">
+                    <color key="backgroundColor" red="0.14117647058823529" green="0.77254901960784317" blue="0.32156862745098036" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="VhS-wj-WDL"/>
+                    </constraints>
+                    <state key="normal" title="充值">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="topUpButtonAction:" destination="-1" eventType="touchUpInside" id="KP2-My-C0I"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上车时请出示此二维码扫描" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pw-j1-hyi">
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="CYi-4U-GSC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2Eu-c6-amB"/>
+                <constraint firstItem="CYi-4U-GSC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="110" id="785-KY-YNQ"/>
+                <constraint firstItem="7pw-j1-hyi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="7lI-fc-yLa"/>
+                <constraint firstAttribute="trailing" secondItem="CYi-4U-GSC" secondAttribute="trailing" id="9GU-Hc-thE"/>
+                <constraint firstItem="hSi-0c-AGK" firstAttribute="top" secondItem="7pw-j1-hyi" secondAttribute="bottom" constant="20" id="dwN-ye-n2J"/>
+                <constraint firstAttribute="trailing" secondItem="7pw-j1-hyi" secondAttribute="trailing" constant="16" id="iir-Fm-fEh"/>
+                <constraint firstItem="7pw-j1-hyi" firstAttribute="top" secondItem="CYi-4U-GSC" secondAttribute="bottom" constant="15" id="ndm-7r-cML"/>
+                <constraint firstItem="CYi-4U-GSC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="110" id="q6C-JB-Hab"/>
+                <constraint firstItem="hSi-0c-AGK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="vx6-64-vyS"/>
+                <constraint firstAttribute="trailing" secondItem="hSi-0c-AGK" secondAttribute="trailing" constant="25" id="yZP-PP-Msj"/>
+            </constraints>
+            <point key="canvasLocation" x="25.5" y="52.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="test" width="280" height="280"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
+</document>

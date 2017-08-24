@@ -1,0 +1,115 @@
+//
+//  FBMyTicketDetailedViewController.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyTicketDetailedViewController.h"
+#import "FBRouteViewController.h"
+
+@interface FBMyTicketDetailedViewController ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *startAddressLb;
+@property (weak, nonatomic) IBOutlet UILabel *endAddressLb;
+@property (weak, nonatomic) IBOutlet UILabel *timeLB;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLB;
+@property (weak, nonatomic) IBOutlet UILabel *goThourthLB;
+@property (weak, nonatomic) IBOutlet UILabel *setoutTimeLB;
+@property (weak, nonatomic) IBOutlet UILabel *platnoLB;
+@property (weak, nonatomic) IBOutlet UILabel *visableDataAndCount;
+@property (weak, nonatomic) IBOutlet UILabel *goOnStationLB;
+@property (weak, nonatomic) IBOutlet UIImageView *ticketImageView;
+
+@end
+
+@implementation FBMyTicketDetailedViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //导航栏处理
+    [self setUpNav];
+    //赋值并调整UI
+    [self setValueToControl];
+}
+
+- (void)setUpNav
+{
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.title = @"车票详情";
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_icon_nav" target:self action:@selector(toMap)];
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+}
+
+-(void)setValueToControl
+{
+    _startAddressLb.text = _model.staName;
+    _endAddressLb.text = _model.endName;
+    _setoutTimeLB.text = _model.time;
+    
+    _goOnStationLB.text = _model.upStationName;
+    _platnoLB.text = @"123";//_model.platNo;
+    _visableDataAndCount.text = [NSString stringWithFormat:@"%@ 共%@天",_model.validDate,_model.dayCount];
+    //票的类型
+    if (_model.productType == 1) {
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_week"];
+    }else if (_model.productType == 2){
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_month"];
+    }else if (_model.productType == 3){
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_season"];
+    }else if (_model.productType == 4){
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_day"];
+    }
+    
+    [self getAppLineByRid:_model.routeId];
+}
+
+//查看路线信息(主要是获取报名时 显示的速度 跟总时间)
+-(void)getAppLineByRid:(NSString * )rid{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setObject:rid forKey:@"rid"];
+    [OCNetworkingTool POSTWithUrl:getAppLineByRidUrl() withParams:dic success:^(id responseObject) {
+        DBLog("%@",[PublicMethod jsEncapsulateWithDictionary:(NSDictionary *)responseObject]);
+        if ([responseObject[@"code"] integerValue] == 200) {
+            NSDictionary *data = responseObject[@"data"];
+            NSString *distance = [NSString stringWithFormat:@"%.2fkm",[data[@"ralen"] integerValue]/1000.0];
+            NSString *totalTime = [NSString stringWithFormat:@"%@min",data[@"putime"]];
+            NSString *goThourthStr = data[@"rdesc"];
+            _distanceLB.text = distance;
+            _timeLB.text = totalTime;
+            _goThourthLB.text = goThourthStr;
+        }
+    } fail:^(NSError *error) {
+        
+    }];
+    
+}
+
+- (void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+//地图跳转
+-(void)toMap
+{
+    FBRouteViewController *routeCtl = [[FBRouteViewController alloc]init];
+    routeCtl.viewStyle = @"3";
+    routeCtl.ticketListmodel = _model;
+    [self.navigationController pushViewController:routeCtl animated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

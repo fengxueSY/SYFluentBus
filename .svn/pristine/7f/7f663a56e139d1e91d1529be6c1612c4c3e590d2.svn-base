@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            scope = "0"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FluentBus/Class/MySelf/MyOrder/Model/FBWeiXinPay.m"
+            timestampString = "506591267.025125"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "+treatWeiXinPaySerialId:Success:Fail:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[FBWeiXinPay treatWeiXinPaySerialId:Success:Fail:]"
+                  moduleName = "FluentBus"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/BigWhite/Desktop/%E6%98%9F%E5%94%AF/FluentBus/FluentBus/Class/MySelf/MyOrder/Model/FBWeiXinPay.m"
+                  timestampString = "506758406.282246"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "106">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__51+[FBWeiXinPay treatWeiXinPaySerialId:Success:Fail:]_block_invoke"
+                  moduleName = "FluentBus"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/BigWhite/Desktop/%E6%98%9F%E5%94%AF/FluentBus/FluentBus/Class/MySelf/MyOrder/Model/FBWeiXinPay.m"
+                  timestampString = "506758406.284537"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

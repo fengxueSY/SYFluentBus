@@ -1,0 +1,39 @@
+//
+//  FBOrderModel.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/6.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBOrderModel : NSObject
+//详细列表
+@property (nonatomic,copy) NSString * appid;/**<企业id*/
+@property (nonatomic,copy) NSString * ctime;/**<创建时间*/
+@property (nonatomic,copy) NSString * hashvalue;/**<*/
+@property (nonatomic,copy) NSString * maxspd;/**<最高车速*/
+@property (nonatomic,copy) NSString * putime;/**<全程用时（分钟）*/
+@property (nonatomic,copy) NSString * ralen;/**<*/
+@property (nonatomic,copy) NSString * rcindex;/**<拼音索引*/
+@property (nonatomic,copy) NSString * rcode;/**<*/
+@property (nonatomic,copy) NSString * rdesc;/**<线路描述*/
+@property (nonatomic,copy) NSString * rid;/**<线路id*/
+@property (nonatomic,copy) NSString * rimg;/**<*/
+@property (nonatomic,copy) NSString * rmark;/**<*/
+@property (nonatomic,copy) NSString * rname;/**<线路名称*/
+@property (nonatomic,copy) NSString * rowner;/**<归属id*/
+@property (nonatomic,copy) NSString * rowntext;/**<归属名称*/
+@property (nonatomic,copy) NSString * rstat;/**<线路状态*/
+@property (nonatomic,copy) NSString * utime;/**<最后更新时间*/
+
++(void)getLineListParameter:(id)parameter Success:(void(^)(id successed))seccess Fail:(void(^)(id failed))fail;
+
+//模糊列表
+@property (nonatomic,copy) NSString * stationId;
+@property (nonatomic,copy) NSString * name;
+
++(void)queryStationName:(NSDictionary *)stationName Success:(void(^)(id successed))seccess Fail:(void(^)(id failed))fail;
+
+@end

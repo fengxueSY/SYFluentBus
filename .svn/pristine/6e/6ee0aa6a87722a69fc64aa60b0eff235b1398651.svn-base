@@ -1,0 +1,123 @@
+//
+//  FBMyOrderViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderViewController.h"
+#import "FBMyOrderCell.h"
+#import "FBMyOrderDetailsViewController.h"
+#import "FBMyOrderModel.h"
+@interface FBMyOrderViewController ()<FBMyOrderCellDelegate>{
+    NSMutableArray * _dataArray;//数据源
+    NSInteger page;
+}
+
+@end
+
+@implementation FBMyOrderViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"我的订单";
+    _dataArray = [[NSMutableArray alloc]init];
+    page = 1;
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    [self creatBaseUI];
+}
+-(void)viewWillAppear:(BOOL)animated{
+      [self getData:@"1"];
+}
+-(void)getData:(NSString *)pageNumber{
+    [FBMyOrderModel userOrderListParameter:pageNumber Success:^(id successed) {
+        [_tableView.mj_header endRefreshing];
+        [_tableView.mj_footer endRefreshing];
+        if ([pageNumber integerValue] == 1) {
+            _dataArray = [[NSMutableArray alloc]initWithArray:(NSArray *)successed];
+        }else{
+            NSArray * arr = (NSArray *)successed;
+            for (int i = 0;  i < arr.count; i++) {
+                [_dataArray addObject:arr[i]];
+            }
+        }
+        [_tableView reloadData];
+    } Fail:^(id failed) {
+        [MBProgressHUD showError:@"暂无订单信息"];
+    }];
+}
+-(void)creatBaseUI{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    _tableView.backgroundColor = UIColorFromRGB(0xEDF2F5);
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self getData:@"1"];
+    }];
+    _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        if (_dataArray.count < 20) {
+            [MBProgressHUD showError:@"已经是最后一页了"];
+            [_tableView.mj_footer endRefreshing];
+        }else{
+            NSInteger a = _dataArray.count % 20;
+            if (a == 0) {
+                [self getData:[NSString stringWithFormat:@"%ld",page + 1]];
+            }else{
+                [MBProgressHUD showError:@"已经是最后一页了"];
+                [_tableView.mj_footer endRefreshing];
+            }
+        }
+    }];
+    [self.view addSubview:_tableView];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _dataArray.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 200;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *CellIdentifier = @"Cell";
+    BOOL nibsRegistered = NO;
+    if (!nibsRegistered) {
+        UINib *nib = [UINib nibWithNibName:NSStringFromClass([FBMyOrderCell class]) bundle:nil];
+        [tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
+        nibsRegistered = YES;
+    }
+    FBMyOrderCell *cell = (FBMyOrderCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    FBMyOrderModel * myOrderModel = _dataArray[indexPath.row];
+    [cell setMyOrderModel:myOrderModel];
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    FBMyOrderModel * model = _dataArray[indexPath.row];
+    FBMyOrderDetailsViewController * details = [[FBMyOrderDetailsViewController alloc]init];
+    details.orderID = model.orderId;
+    [self.navigationController pushViewController:details animated:YES];
+}
+#pragma mark -  cell动作事件
+//去支付
+-(void)goPayOrder:(FBMyOrderModel *)myOrderModel{
+    
+}
+//取消订单
+-(void)cancalOrder:(FBMyOrderModel *)myOrderModel{
+    
+}
+//申请退款
+-(void)applyForRefund:(FBMyOrderModel *)myOrderModel{
+    
+}
+-(void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+@end

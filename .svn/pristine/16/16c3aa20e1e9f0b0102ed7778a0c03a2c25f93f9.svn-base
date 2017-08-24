@@ -1,0 +1,26 @@
+//
+//  FBTwoTypeView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/5.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBTwoTypeView.h"
+
+@implementation FBTwoTypeView
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(selectDayImageAction)];
+    self.dayImageView.userInteractionEnabled = YES;
+    [self.dayImageView addGestureRecognizer:tap];
+    [self.productTypeName.layer setBorderColor:UIColorFromRGB(0xff4d64).CGColor];
+    [self.productTypeName.layer setBorderWidth:0.8];
+    self.productTypeName.textColor = UIColorFromRGB(0xff4d64);
+}
+-(void)selectDayImageAction{
+    if (_delegate) {
+        [_delegate selectDayImage];
+    }
+}
+@end

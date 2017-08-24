@@ -1,0 +1,84 @@
+//
+//  FBOrderViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBOrderViewController.h"
+#import "FBOrderCell.h"
+
+@interface FBOrderViewController ()<UISearchBarDelegate>{
+    EMSearchBar * _searchBar;
+}
+
+@end
+
+@implementation FBOrderViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self creatBaseTabelView];
+}
+-(void)creatBaseTabelView{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:_tableView];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 100;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 50;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 120;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView * headView = [[UIView alloc]init];
+    _searchBar = [[EMSearchBar alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
+    _searchBar.placeholder = @"站点搜索";
+    _searchBar.delegate = self;
+    _searchBar.showsCancelButton = YES;
+    [_searchBar setCancelButtonTitle:@"取消"];
+    [headView addSubview:_searchBar];
+    return headView;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellID = @"ID";
+    BOOL isRes = NO;
+    if (!isRes) {
+        [_tableView registerNib:[UINib nibWithNibName:@"FBOrderCell" bundle:nil] forCellReuseIdentifier:cellID];
+    }
+    FBOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    return cell;
+}
+#pragma mark - searchBar DELEGATE
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [_searchBar resignFirstResponder];
+}
+-(void)searchBarTextDidBeginEditing:(UISearchBar*)searchBar{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
+    [btn setTitle:@"取消" forState:UIControlStateNormal];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

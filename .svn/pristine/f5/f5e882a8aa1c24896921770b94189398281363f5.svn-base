@@ -1,0 +1,30 @@
+//
+//  FBOrderCellCollectionCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/5.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBOrderCellCollectionCell.h"
+
+@implementation FBOrderCellCollectionCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self.backView.layer setBorderColor:greenUnifyColor.CGColor];
+    [self.backView.layer setBorderWidth:1];
+}
+-(void)setProductsShiftsModel:(FBOrderProductsShiftsModel *)productsShiftsModel{
+    self.timeLabel.text = productsShiftsModel.time;
+    if ([productsShiftsModel.left integerValue] == 0) {
+        self.leftOverLabel.textColor = UIColorWithRGB(200, 200, 200, 1);
+        self.leftOverLabel.text = @"已满";
+        self.upImageView.image = UIImageName(@"buy_icon_full");
+    }else{
+        self.leftOverLabel.text = [NSString stringWithFormat:@"%@",productsShiftsModel.left];
+        self.upImageView.image = UIImageName(@"buy_icon_buy");
+    }
+}
+
+@end

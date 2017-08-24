@@ -1,0 +1,80 @@
+//
+//  FBMyTicketDetailedViewController.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyTicketDetailedViewController.h"
+
+@interface FBMyTicketDetailedViewController ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backViewWidth;
+@property (weak, nonatomic) IBOutlet UILabel *startAddressLb;
+@property (weak, nonatomic) IBOutlet UILabel *endAddressLb;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+@end
+
+@implementation FBMyTicketDetailedViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    DBLog(@"%f",self.scrollView.frame.size.height);
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //导航栏处理
+    [self setUpNav];
+    //赋值并调整UI
+    [self makeUIAndSetValue];
+}
+
+- (void)setUpNav
+{
+     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.title = @"车票详情";
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_icon_nav" target:self action:@selector(toMap)];
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+}
+
+-(void)makeUIAndSetValue
+{
+    NSString *testTitle = @"软件路软件路软件路软件路";
+    self.startAddressLb.text = testTitle;
+    self.endAddressLb.text = testTitle;
+    
+    float startWidth = [PublicMethod getLabelWidth:17 fontSize:14 text:self.startAddressLb.text];
+    float endWidth = [PublicMethod getLabelWidth:17 fontSize:14 text:self.endAddressLb.text];
+    
+    //78为计算所得
+    if(endWidth+startWidth+78>304)
+    {
+        self.backViewWidth.constant =endWidth+startWidth+78+5;
+        
+    }else{
+        self.backViewWidth.constant = 304;
+        
+    }
+}
+
+- (void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+//地图跳转
+-(void)toMap
+{
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

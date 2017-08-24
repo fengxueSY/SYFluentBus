@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="FBTopUpMidView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="225"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mum-ya-RE1">
+                    <rect key="frame" x="140.5" y="17" width="94" height="40"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="MEf-CE-vCD"/>
+                    </constraints>
+                    <state key="normal" title="100元"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ytw-wP-UBq">
+                    <rect key="frame" x="264.5" y="17" width="94.5" height="40"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="brR-p8-PFL"/>
+                    </constraints>
+                    <state key="normal" title="200元"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ir-Ch-RYM">
+                    <rect key="frame" x="16" y="17" width="94.5" height="40"/>
+                    <color key="backgroundColor" red="0.12549019607843137" green="0.55294117647058827" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Ib9-q1-nga"/>
+                    </constraints>
+                    <state key="normal" title="0.01元">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="confirmorder_agree" translatesAutoresizingMaskIntoConstraints="NO" id="93i-32-giU">
+                    <rect key="frame" x="16" y="192" width="15" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="SjK-Mv-Mq7"/>
+                        <constraint firstAttribute="width" constant="15" id="ivg-8E-OQy"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTF-sZ-JvQ">
+                    <rect key="frame" x="45" y="191.5" width="0.0" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="PNG-x2-viz"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwT-Id-SEq">
+                    <rect key="frame" x="25" y="127" width="325" height="40"/>
+                    <color key="backgroundColor" red="0.14117647058823529" green="0.77254901960784317" blue="0.32156862745098036" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="v34-y4-a73"/>
+                    </constraints>
+                    <state key="normal" title="充值">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入充值金额（单位：元）" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rb5-cJ-LYK">
+                    <rect key="frame" x="16" y="72" width="343" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="WlH-LL-Cfe"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="VTF-sZ-JvQ" firstAttribute="top" secondItem="XwT-Id-SEq" secondAttribute="bottom" constant="24.5" id="5zu-u4-YJr"/>
+                <constraint firstItem="9Ir-Ch-RYM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="17" id="86F-OI-KTW"/>
+                <constraint firstItem="9Ir-Ch-RYM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="8Z9-xf-h5Y"/>
+                <constraint firstAttribute="trailing" secondItem="XwT-Id-SEq" secondAttribute="trailing" constant="25" id="HYM-pu-3K8"/>
+                <constraint firstItem="93i-32-giU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="KZc-yr-Tv7"/>
+                <constraint firstItem="XwT-Id-SEq" firstAttribute="top" secondItem="Rb5-cJ-LYK" secondAttribute="bottom" constant="15" id="Q84-bO-3bp"/>
+                <constraint firstItem="VTF-sZ-JvQ" firstAttribute="leading" secondItem="93i-32-giU" secondAttribute="trailing" constant="14" id="S2G-0n-ZCr"/>
+                <constraint firstItem="Ytw-wP-UBq" firstAttribute="leading" secondItem="Mum-ya-RE1" secondAttribute="trailing" constant="30" id="Sbo-j5-Fm2"/>
+                <constraint firstItem="XwT-Id-SEq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="25" id="SgV-ij-ZuE"/>
+                <constraint firstItem="93i-32-giU" firstAttribute="top" secondItem="XwT-Id-SEq" secondAttribute="bottom" constant="25" id="W5h-Wh-3Mw"/>
+                <constraint firstItem="Mum-ya-RE1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="17" id="b5L-MA-6dD"/>
+                <constraint firstItem="Ytw-wP-UBq" firstAttribute="width" secondItem="9Ir-Ch-RYM" secondAttribute="width" id="fB3-IL-OzF"/>
+                <constraint firstItem="Rb5-cJ-LYK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="fYF-VJ-edb"/>
+                <constraint firstAttribute="trailing" secondItem="Rb5-cJ-LYK" secondAttribute="trailing" constant="16" id="gWR-dZ-7rf"/>
+                <constraint firstAttribute="trailing" secondItem="Ytw-wP-UBq" secondAttribute="trailing" constant="16" id="hIj-82-eAf"/>
+                <constraint firstItem="Rb5-cJ-LYK" firstAttribute="top" secondItem="9Ir-Ch-RYM" secondAttribute="bottom" constant="15" id="hSz-WP-pzs"/>
+                <constraint firstItem="Ytw-wP-UBq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="17" id="ieW-j4-XsH"/>
+                <constraint firstItem="Mum-ya-RE1" firstAttribute="leading" secondItem="9Ir-Ch-RYM" secondAttribute="trailing" constant="30" id="jcY-Ql-qL6"/>
+                <constraint firstItem="Mum-ya-RE1" firstAttribute="width" secondItem="9Ir-Ch-RYM" secondAttribute="width" id="vdA-GI-9Ek"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="agreeButton" destination="93i-32-giU" id="bFp-4o-yn1"/>
+                <outlet property="button_100" destination="Mum-ya-RE1" id="SSX-up-O9l"/>
+                <outlet property="button_200" destination="Ytw-wP-UBq" id="ISz-2v-u33"/>
+                <outlet property="button_50" destination="9Ir-Ch-RYM" id="Gb0-lc-wea"/>
+                <outlet property="conLabel" destination="VTF-sZ-JvQ" id="ONi-ij-WBo"/>
+                <outlet property="goPayMoneyButton" destination="XwT-Id-SEq" id="8uZ-xL-Jwg"/>
+                <outlet property="writeMoneyNumberTextFile" destination="Rb5-cJ-LYK" id="7lE-Jy-8Up"/>
+            </connections>
+            <point key="canvasLocation" x="-240" y="-17"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="confirmorder_agree" width="12" height="12"/>
+    </resources>
+</document>

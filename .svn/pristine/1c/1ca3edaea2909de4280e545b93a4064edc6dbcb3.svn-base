@@ -1,0 +1,28 @@
+//
+//  FBOrderHeadView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/30.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBOrderHeadView.h"
+
+@implementation FBOrderHeadView
+-(void)setListModel:(FBOrderModel *)listModel{
+    self.startLabel.text = listModel.stations[0];
+    self.endLabel.text = listModel.stations.lastObject;
+    self.timeLabel.text = [NSString stringWithFormat:@"约%@分钟",listModel.putime];
+    self.vLabel.text = [NSString stringWithFormat:@"约%.2f公里",[listModel.ralen floatValue] / 1000];
+    NSString * lengStr = nil;
+    for (int i = 0; i < listModel.stations.count; i++) {
+        if (i == 0) {
+            lengStr = listModel.stations[0];
+        }else{
+            lengStr = [NSString stringWithFormat:@"%@ - %@",lengStr,listModel.stations[i]];
+        }
+    }
+
+    self.conLabel.text = lengStr;
+}
+@end

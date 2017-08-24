@@ -1,0 +1,58 @@
+//
+//  FBNavigationController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/26.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBNavigationController.h"
+
+@interface FBNavigationController ()
+
+@end
+
+@implementation FBNavigationController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // 设置从导航栏下面开始布局
+    // self.navigationBar.translucent = NO;
+    // Do any additional setup after loading the view.
+}
+
++ (void)initialize
+{
+    //设置导航栏主题
+    [self setNavigationBarTheme];
+}
+
++(void)setNavigationBarTheme
+{
+    //设置导航栏背景颜色
+    UINavigationBar *appearance = [UINavigationBar appearance];
+    
+    [appearance setBarTintColor:UIColorFromRGB(0xf7f7f7)];
+    
+    //字体颜色
+    //    [appearance setTintColor:[UIColor whiteColor]];
+    //设置导航栏字体颜色跟大小
+    NSMutableDictionary *textAttrs = [NSMutableDictionary dictionary];
+    textAttrs[NSForegroundColorAttributeName] = UIColorFromRGB(0x333333);
+    textAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:20];
+    [appearance setTitleTextAttributes:textAttrs];
+    
+}
+
+//拦截所有push进来的子控制器
+-(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    //如果不是栈底控制器（最先的那个控制器）
+    if (self.viewControllers.count>0) {
+        //当push这个控制器的时候 ， 就隐藏底部的tabbar
+        viewController.hidesBottomBarWhenPushed = YES;
+    }
+    
+    [super pushViewController:viewController animated:animated];
+}
+@end

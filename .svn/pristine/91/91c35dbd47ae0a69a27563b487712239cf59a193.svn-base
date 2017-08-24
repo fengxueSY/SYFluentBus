@@ -1,0 +1,13 @@
+//
+//  FBMyTicketDetailedViewController.h
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBBaseViewController.h"
+
+@interface FBMyTicketDetailedViewController : FBBaseViewController
+
+@end

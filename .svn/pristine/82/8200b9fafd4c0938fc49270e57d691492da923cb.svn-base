@@ -1,0 +1,175 @@
+//
+//  FBTakeBusViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTakeBusViewController.h"
+#import "FBTakeBusCollectionViewCell.h"
+#import "FBRouteViewController.h"
+#import "FBTopUpCardViewController.h"
+
+@interface FBTakeBusViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+{
+    float _value;
+}
+
+@property (nonatomic,strong) UICollectionView *collectionView;
+
+@property (nonatomic,strong) UICollectionViewFlowLayout *flowLayout;
+
+@property (nonatomic,strong) NSMutableArray *collectionDataSource;
+
+@end
+
+@implementation FBTakeBusViewController
+
+static NSString *Identifier = @"mytakeBusCell";
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _value = [UIScreen mainScreen].brightness;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEndBackGround) name:UIApplicationWillResignActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[UIScreen mainScreen] setBrightness:1];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[UIScreen mainScreen] setBrightness:_value];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_icon_nav" target:self action:@selector(toMap)];
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithTitle:@"储值卡" target:self action:@selector(toStoredValueCard)];
+    
+    [self setCollectionView];
+    
+}
+
+#pragma mark - 推入后台方法
+
+- (void)willEndBackGround{
+    
+    [[UIScreen mainScreen] setBrightness:_value];
+    DBLog(@"%f",_value);
+}
+
+#pragma mark - 推入前台
+
+- (void)willEnterForeground{
+    
+    [[UIScreen mainScreen] setBrightness:1];
+}
+
+
+//地图跳转
+-(void)toMap
+{
+    FBRouteViewController * route = [[FBRouteViewController alloc]init];
+    route.viewStyle = @"3";
+    [self.navigationController pushViewController:route animated:YES];
+}
+
+//储值卡跳转
+-(void)toStoredValueCard
+{
+    FBTopUpCardViewController * topUp = [[FBTopUpCardViewController alloc]init];
+    [self.navigationController pushViewController:topUp animated:YES];
+}
+
+- (void)setCollectionView
+{
+    // 设置flowLayout
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT-64-44);
+    self.flowLayout.minimumLineSpacing = 0;
+    self.flowLayout.minimumInteritemSpacing = 0;
+    
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.flowLayout];
+    
+    self.collectionView.backgroundColor = UIColorFromRGB(0xf5f5f5);
+    
+    self.collectionView.pagingEnabled = YES;
+    // 设置collectionView
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate   = self;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"FBTakeBusCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:Identifier];
+    [self.view addSubview:self.collectionView];
+    
+    //约束_taskTableView
+    WeakSelf(weakSelf);
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.mas_equalTo(weakSelf.view);
+        
+    }];
+}
+
+#pragma mark - collectionView代理
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 10;//self.collectionDataSource.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FBTakeBusCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:Identifier forIndexPath:indexPath];
+    cell.testTitle = @"高普路高普路高普路高普路高普路高普路";
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma - mark 懒加载
+-(NSMutableArray *)collectionDataSource
+{
+    if (_collectionDataSource == nil) {
+        _collectionDataSource = [NSMutableArray array];
+    }
+    return _collectionDataSource;
+}
+
+- (UICollectionViewFlowLayout *)flowLayout {
+    if (_flowLayout == nil) {
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    }
+    return _flowLayout;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+@end

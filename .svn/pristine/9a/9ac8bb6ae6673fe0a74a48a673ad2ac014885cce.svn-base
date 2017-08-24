@@ -1,0 +1,276 @@
+//
+//  FBMyOrderViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderViewController.h"
+#import "FBMyOrderCell.h"
+#import "FBMyOrderDetailsViewController.h"
+#import "FBMyOrderModel.h"
+#import "FBWeiXinPay.h"
+#import "JF_CalendarView.h"
+#import "FBDefaultImageView.h"
+#import "FBMyOrderApplyForRefundViewController.h"
+@interface FBMyOrderViewController ()<FBMyOrderCellDelegate,JF_CalendarViewDelegate,FBDefaultImageViewDelegate>
+{
+    NSMutableArray * _dataArray;//数据源
+    NSInteger page;
+}
+
+@property(nonatomic,strong) JF_CalendarView *calendarView;
+
+//自定义View
+@property (nonatomic,strong) UIView *blackView;
+//默认图片
+@property (nonatomic,strong) FBDefaultImageView * defaultImageView;
+
+@end
+
+@implementation FBMyOrderViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"我的订单";
+    _dataArray = [[NSMutableArray alloc]init];
+    page = 1;
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    [self creatBaseUI];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOrderPayResult:) name:@"WXPay" object:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+      [self getData:@"1"];
+}
+-(void)viewDidDisappear:(BOOL)animated{
+    [MBProgressHUD hideHUDForView:self.view];
+}
+-(void)getData:(NSString *)pageNumber{
+    [MBProgressHUD showMessage:@"数据请求中" toView:self.view];
+    [FBMyOrderModel userOrderListParameter:pageNumber Success:^(id successed) {
+        [_tableView.mj_header endRefreshing];
+        [_tableView.mj_footer endRefreshing];
+        if ([pageNumber integerValue] == 1) {
+            _dataArray = [[NSMutableArray alloc]initWithArray:(NSArray *)successed];
+        }else{
+            NSArray * arr = (NSArray *)successed;
+            for (int i = 0;  i < arr.count; i++) {
+                [_dataArray addObject:arr[i]];
+            }
+        }
+        [self hideDefaultImageView];
+        [_tableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view];
+    } Fail:^(id failed) {
+        [self showDefaultImageView];
+        [MBProgressHUD showError:@"暂无订单信息"];
+        [MBProgressHUD hideHUDForView:self.view];
+    }];
+}
+
+-(FBDefaultImageView *)defaultImageView{
+    if (!_defaultImageView) {
+        _defaultImageView = [[FBDefaultImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) Text:@"您还没有订单,立即订购" MakeRange:0 TextColor:UIColorFromRGB(0x888888)];
+        _defaultImageView.userInteractionEnabled = YES;
+        _defaultImageView.delegate = self;
+        [self.tableView addSubview:_defaultImageView];
+    }
+    return _defaultImageView;
+}
+
+#pragma mark -  是否显示无车票的默认界面
+-(void)showDefaultImageView{
+    self.defaultImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+-(void)hideDefaultImageView{
+    [self.defaultImageView removeFromSuperview];
+}
+//修改tabbar
+-(void)changeTabBar{
+    self.tabBarController.selectedIndex = 1;
+}
+
+-(void)creatBaseUI{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    _tableView.backgroundColor = backCommonlyUsedColor;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self getData:@"1"];
+    }];
+    _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        if (_dataArray.count < 20) {
+            [MBProgressHUD showError:@"已经是最后一页了"];
+            [_tableView.mj_footer endRefreshing];
+        }else{
+            NSInteger a = _dataArray.count % 20;
+            if (a == 0) {
+                [self getData:[NSString stringWithFormat:@"%ld",page + 1]];
+            }else{
+                [MBProgressHUD showError:@"已经是最后一页了"];
+                [_tableView.mj_footer endRefreshing];
+            }
+        }
+    }];
+    [self.view addSubview:_tableView];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _dataArray.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 200;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *CellIdentifier = @"Cell";
+    BOOL nibsRegistered = NO;
+    if (!nibsRegistered) {
+        UINib *nib = [UINib nibWithNibName:NSStringFromClass([FBMyOrderCell class]) bundle:nil];
+        [tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
+        nibsRegistered = YES;
+    }
+    FBMyOrderCell *cell = (FBMyOrderCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    FBMyOrderModel * myOrderModel = _dataArray[indexPath.row];
+    [cell setMyOrderModel:myOrderModel];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    FBMyOrderModel * model = _dataArray[indexPath.row];
+    FBMyOrderDetailsViewController * details = [[FBMyOrderDetailsViewController alloc]init];
+    details.orderID = model.orderId;
+    details.myOrderModel = model;
+    [self.navigationController pushViewController:details animated:YES];
+}
+#pragma mark -  cell动作事件
+//去支付
+-(void)goPayOrder:(FBMyOrderModel *)myOrderModel{
+    if (![WXApi isWXAppInstalled]) {
+        TTAlert1(@"未检测到微信，请安装微信后重试", self);
+        return;
+    }
+    if (![WXApi isWXAppSupportApi]) {
+        TTAlert1(@"您安装的微信版本暂不支持微信支付，请升级后重试", self);
+        return;
+    }
+    [MBProgressHUD showMessage:@"请求中" toView:self.view];
+    [FBWeiXinPay treatWeiXinPaySerialId:myOrderModel.paySerialId Success:^(id successed) {
+
+    } Fail:^(id failed) {
+        TTAlert1(failed, self);
+        [MBProgressHUD hideHUDForView:self.view];
+    }];
+}
+-(void)getOrderPayResult:(NSNotification *)sender{
+    [MBProgressHUD hideHUDForView:self.view];
+    NSDictionary * dic = [sender userInfo];
+    if ([[dic objectForKey:@"WeiXinPay"] isEqualToString:@"成功"]) {
+        TTAlert1(@"支付成功!", self);
+    }
+    if ([[dic objectForKey:@"WeiXinPay"] isEqualToString:@"失败"]) {
+        TTAlert1(@"支付失败，请重新支付", self);
+    }
+    if ([[dic objectForKey:@"WeiXinPay"] isEqualToString:@"取消"]) {
+        TTAlert1(@"支付已取消", self);
+    }
+}
+
+//取消订单
+-(void)cancalOrder:(FBMyOrderModel *)myOrderModel{
+    DBLog(@"取消订单");
+    [MBProgressHUD showMessage:@"取消中" toView:self.view];
+    [OCNetworkingTool POSTWithUrl:cancelOrder() withParams:@{@"orderId":myOrderModel.orderId} success:^(id responseObject) {
+        [MBProgressHUD hideHUDForView:self.view];
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        if ([[dic objectForKey:@"code"] integerValue] == 200) {
+            [MBProgressHUD showSuccess:@"取消成功"];
+            myOrderModel.orderStatus = @"1";
+            [_tableView reloadData];
+        }
+        
+    } fail:^(NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view];
+        DBLog(@"cuowo ======  %@",error);
+    }];
+}
+
+//申请退款
+-(void)applyForRefund:(FBMyOrderModel *)myOrderModel{
+    FBMyOrderApplyForRefundViewController * applyFor = [[FBMyOrderApplyForRefundViewController alloc]init];
+    applyFor.orderID = myOrderModel.orderId;
+    applyFor.myOrderModel = myOrderModel;
+    applyFor.comeStyle = @"0";
+    [self.navigationController pushViewController:applyFor animated:YES];
+}
+
+#pragma mark -  显示日历
+-(void)showCalendar:(NSArray *)array{
+    
+    NSLog(@"123");
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
+    layout.minimumInteritemSpacing=0;
+    self.calendarView=[[JF_CalendarView alloc]initWithFrame:CGRectMake(0, 30, 300, 350) collectionViewLayout:layout];
+    self.calendarView.myDelegate = self;
+    NSMutableArray *calendarArray = [NSMutableArray array];
+    if (ArrayNotNilAndNull(array)) {
+        for (NSNumber *timeNum in array) {
+            NSString *timeStr = [NSString stringWithFormat:@"%@",timeNum];
+            if (timeStr.length >=10) {
+                timeStr = [timeStr substringToIndex:[timeStr length] - 3];
+                [calendarArray addObject: [self getTimeb:timeStr]];
+            }
+        }
+    }
+    [self.calendarView.registerArr addObjectsFromArray:[calendarArray copy]];
+    //  self.calendarView.backgroundColor=[UIColor purpleColor];
+    self.calendarView.center=self.view.center;
+    [self.view addSubview:self.blackView];
+    [self.view addSubview:self.calendarView];
+}
+
+
+//日历关闭回调
+-(void)toClosecalendarView
+{
+    [self.blackView removeFromSuperview];
+    [self.calendarView removeFromSuperview];
+}
+
+//去掉毫秒后的时间
+-(NSString *)getTimeb:(NSString *)time{
+    NSDate  *localeDate = [NSDate dateWithTimeIntervalSince1970:[time integerValue]];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+    NSString *strDate = [dateFormatter stringFromDate:localeDate];
+    
+    return strDate;
+}
+
+- (UIView *)blackView
+{
+    if (_blackView ==nil) {
+        
+        _blackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _blackView.backgroundColor = [UIColor blackColor];
+        _blackView.alpha = 0.3;
+    }
+    return _blackView;
+}
+
+-(void)goBack{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"WXPay" object:nil];;
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+@end

@@ -1,0 +1,24 @@
+//
+//  FBOrderCell.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/30.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface FBOrderCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIView *backView;
+@property (weak, nonatomic) IBOutlet UILabel *upLabel;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *scrView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scrViewWidth;
+@property (weak, nonatomic) IBOutlet UILabel *startLabel;
+@property (weak, nonatomic) IBOutlet UILabel *endLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *conLabel;
+
+
+@end

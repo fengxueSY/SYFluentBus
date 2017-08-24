@@ -1,0 +1,21 @@
+//
+//  AppDelegate+FBThreeLibRegister.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "AppDelegate+FBThreeLibRegister.h"
+
+@implementation AppDelegate (FBThreeLibRegister)
+-(void)registerThreeLib{
+    //设置umeng
+    [[UMSocialManager defaultManager] openLog:YES];
+    [[UMSocialManager defaultManager]setUmSocialAppkey:@"58452b7f07fe657ac6000ac3"];
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"104254554"  appSecret:@"04d8ae67c42b4f29604825268fc9ac0d" redirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+    //设置高德
+    [AMapServices sharedServices].apiKey = GaoDe_APP_KEY;
+
+}
+@end

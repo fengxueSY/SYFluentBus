@@ -1,0 +1,26 @@
+//
+//  FBMyOrderCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderCell.h"
+
+@implementation FBMyOrderCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+   
+}
+-(void)getMyOrderModel:(FBMyOrderModel *)myOrderModel{
+
+}
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

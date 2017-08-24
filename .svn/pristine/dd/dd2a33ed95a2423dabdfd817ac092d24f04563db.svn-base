@@ -1,0 +1,15 @@
+//
+//  FBMyOrderDetailsViewController.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBBaseViewController.h"
+#import "FBMyOrderModel.h"
+@interface FBMyOrderDetailsViewController : FBBaseViewController<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong) UITableView * tableView;
+@property (nonatomic,copy) NSString * orderID;
+@property (nonatomic,strong) FBMyOrderModel * myOrderModel;
+@end

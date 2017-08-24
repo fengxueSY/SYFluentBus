@@ -1,0 +1,33 @@
+//
+//  FBMapMidTableView.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "FBTwoTypeView.h"
+#import "FBNeedListModel.h"
+@protocol FBMapMidTableViewDelegate <NSObject>
+-(void)isShowTableView:(BOOL)isShow;
+-(void)showCalender;
+@end
+
+@interface FBMapMidTableView : UIView<UITableViewDelegate,UITableViewDataSource,FBTwoTypeViewDelegate>
+@property (nonatomic,assign) id <FBMapMidTableViewDelegate>delegate;
+@property (nonatomic,strong) UITableView * tableView;
+@property (nonatomic) CGFloat viewW;
+@property (nonatomic) CGFloat viewH;
+@property (nonatomic) NSInteger selectIndex;
+@property (nonatomic) NSInteger index;//如果是订票界面。标识选中的站点
+@property (nonatomic,strong) NSString * viewStyle;/**<1，线路预览界面。2,订票界面。3.地图导航界面*/
+@property (nonatomic,strong) NSMutableArray * dataArray;/**<数据源*/
+@property (nonatomic) BOOL isShow;
+@property (nonatomic,strong) UIButton * showButton;
+-(instancetype)initWithFrame:(CGRect)frame StyleView:(NSString *)styleView Parameter:(id)parameter;
+
+//报名传值
+@property (nonatomic,strong)FBNeedListModel *needListModel;
+
+@end

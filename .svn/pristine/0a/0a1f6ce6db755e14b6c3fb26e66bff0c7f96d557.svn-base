@@ -1,0 +1,129 @@
+//
+//  FBNeedViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBNeedViewController.h"
+#import "FBNeedListTableViewCell.h"
+#import "FBNewNeedViewController.h"
+#import "FBNeedListModel.h"
+
+
+@interface FBNeedViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    
+}
+
+@property (nonatomic, strong) NSMutableArray *modelArray;
+@property(nonatomic,strong) UITableView *tableView;
+
+@end
+
+@implementation FBNeedViewController
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTitle:@"发起新需求" target:self action:@selector(toMakeNewNeed)];
+    //布局tableView
+    [self creatBaseUI];
+    //获取列表数据
+    [self getNeedList];
+    
+//    [self getRote];
+}
+
+//发起新需求
+- (void)toMakeNewNeed
+{
+     [self.navigationController pushViewController:[FBNewNeedViewController new] animated:YES];
+}
+
+//布局tableView
+-(void)creatBaseUI{
+    
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.estimatedRowHeight = 139;
+    self.tableView.backgroundColor = UIColorFromRGB(0xF5F5F5);
+    [self.view addSubview:_tableView];
+}
+
+//获取列表数据
+- (void)getNeedList
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:@(1) forKey:@"PageIndex"];
+    [dict setObject:@(20) forKey:@"PageSize"];
+    
+    [OCNetworkingTool POSTWithUrl:getNeedListUrl() withParams:dict success:^(id responseObject) {
+        DBLog("%@",[PublicMethod jsEncapsulateWithDictionary:(NSDictionary *)responseObject]);
+        NSDictionary *data = responseObject[@"data"];
+        NSArray *array = data[@"dataList"];
+        for (NSDictionary *dict in array) {
+            FBNeedListModel *model =[FBNeedListModel new];
+            model.startStation = dict[@"startStation"];
+            model.endStation = dict[@"endStation"];
+            model.stime = dict[@"stime"];
+            model.mprice = [NSString stringWithFormat:@"%@",dict[@"mprice"]];
+            model.aprice = [NSString stringWithFormat:@"%@",dict[@"aprice"]];
+            model.votedCount = [NSString stringWithFormat:@"%@",dict[@"votedCount"]];
+            model.myId = dict[@"id"];
+            model.rid = dict[@"rid"];
+            [self.modelArray addObject:model];
+        }
+        
+        [self.tableView reloadData];
+        
+    } fail:^(NSError *error) {
+        [MBProgressHUD showError:@"请求列表失败，请稍后再试"];
+    }];
+}
+
+#pragma mark - tableView代理
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.modelArray.count;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    FBNeedListTableViewCell * cell = [FBNeedListTableViewCell cellTableView:tableView];
+    
+    cell.tag = indexPath.row;
+    FBNeedListModel *model = self.modelArray[indexPath.row];
+    model.tag = cell.tag;
+    cell.model = model;
+    
+    cell.callBack = ^(FBNeedListModel *newM){
+        [self.modelArray replaceObjectAtIndex:newM.tag withObject:newM];
+    };
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma mark - 懒加载
+- (NSMutableArray *)modelArray
+{
+    if (_modelArray == nil) {
+        _modelArray = [NSMutableArray array];
+    }
+    return _modelArray;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

@@ -1,0 +1,52 @@
+//
+//  FBMyTicketCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyTicketCell.h"
+
+@implementation FBMyTicketCell
++(instancetype)cellTableView:(UITableView *)tableView{
+    static NSString * cellID = @"ID";
+    FBMyTicketCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass(self) owner:self options:0]lastObject];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+
+- (void)setTestTitle:(NSString *)testTitle
+{
+    self.startAddressLb.text = testTitle;
+    self.endAddressLb.text = testTitle;
+    
+    float startWidth = [PublicMethod getLabelWidth:17 fontSize:14 text:self.startAddressLb.text];
+    float endWidth = [PublicMethod getLabelWidth:17 fontSize:14 text:self.endAddressLb.text];
+    
+    //78为计算所得
+    if(endWidth+startWidth+86>290)
+    {
+        self.backViewWidth.constant =endWidth+startWidth+86;
+        
+    }else{
+        self.backViewWidth.constant = 290;
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

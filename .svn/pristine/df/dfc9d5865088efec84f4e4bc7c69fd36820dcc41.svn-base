@@ -1,0 +1,13 @@
+//
+//  FBNeedListRouteModel.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 17/1/9.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBNeedListRouteModel.h"
+
+@implementation FBNeedListRouteModel
+
+@end

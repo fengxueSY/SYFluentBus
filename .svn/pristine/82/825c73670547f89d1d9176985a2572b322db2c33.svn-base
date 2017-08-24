@@ -1,0 +1,13 @@
+//
+//  SearchReultCell.h
+//  AutoPullDownTableView
+//
+//  Created by 张森明 on 16/8/19.
+//  Copyright © 2016年 sonmin. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface SearchReultCell : UITableViewCell
+@property (nonatomic, strong) AMapTip *tipModel;
+@end

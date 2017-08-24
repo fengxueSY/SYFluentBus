@@ -1,0 +1,66 @@
+//
+//  FBDefaultImageView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/17.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBDefaultImageView.h"
+
+@implementation FBDefaultImageView
+
+-(instancetype)initWithFrame:(CGRect)frame Text:(NSString *)text MakeRange:(NSInteger)rang TextColor:(UIColor *)textColor{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        float viewW = frame.size.width;
+        float viewH = frame.size.height;
+        UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(viewW / 4, viewH / 5-64, viewW / 2, viewW / 2)];
+        imageView.image = UIImageName(@"buycar_noticket");
+        [self addSubview:imageView];
+        
+        
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(buttonAction)];
+        UILabel * textLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, Max_Y(imageView)+20, viewW, 30)];
+        textLabel.userInteractionEnabled = YES;
+        textLabel.textAlignment = NSTextAlignmentCenter;
+        textLabel.textColor = textColor;
+        [self addSubview:textLabel];
+        
+        NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc]initWithString:text];
+        [attStr addAttribute:NSFontAttributeName value:FONT(14) range:NSMakeRange(rang,text.length)];
+        
+        if ([text isEqualToString:@"您还没有车票,立即订购"] ||[text isEqualToString:@"您还没有订单,立即订购"]) {
+            //获取要调整颜色的文字位置,调整颜色
+            NSRange range1=[[attStr string]rangeOfString:@"立即订购"];
+            [attStr addAttribute:NSForegroundColorAttributeName value:blueUnifyColor range:range1];
+            
+            //立即订购才需要跳去订购页面
+            [textLabel addGestureRecognizer:tap];
+        }else{
+            [attStr addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(rang, text.length)];
+        }
+        
+        textLabel.attributedText = attStr;
+
+        
+//        UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        button.frame = CGRectMake(viewW / 4, Max_Y(textLabel), viewW / 2, viewH / 10);
+//        [button setTitle:@"立即订购" forState:UIControlStateNormal];
+//        [button.layer setMasksToBounds:YES];
+//        [button.layer setCornerRadius:10];
+//        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        button.backgroundColor = greenUnifyColor;
+//        [button addTarget:self action:@selector(buttonAction) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:button];
+    }
+    return self;
+}
+
+-(void)buttonAction{
+    if (_delegate) {
+        [_delegate changeTabBar];
+    }
+}
+@end

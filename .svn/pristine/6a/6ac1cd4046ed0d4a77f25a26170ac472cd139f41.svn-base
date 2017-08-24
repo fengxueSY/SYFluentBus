@@ -1,0 +1,25 @@
+//
+//  FBOrderProductsShiftsModel.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/10.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBOrderProductsShiftsModel : NSObject
+@property (nonatomic,copy) NSString * stationId;/**<班次id*/
+@property (nonatomic,copy) NSString * left;/**<剩余票数*/
+@property (nonatomic,copy) NSString * time;/**<班次时间*/
+
+@property (nonatomic,copy) NSString * moneyPrice;/**<月票价格*/
+@property (nonatomic,copy) NSString * stationRid;/**< rid */
+@property (nonatomic,copy) NSString * stationPid;/**< Pid */
+@property (nonatomic,copy) NSString * startStation;/**<起始站点*/
+@property (nonatomic,copy) NSString * endStation;/**<结束站点*/
+@property (nonatomic,copy) NSString * startTime;/**<开售时间*/
+@property (nonatomic,copy) NSString * endTime;/**<停售时间*/
+@property (nonatomic,copy) NSString * productName;/**<产品名称*/
+
+@end

@@ -1,0 +1,18 @@
+//
+//  FBTopUpCell.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface FBTopUpCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *oneHeadImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *oneFootImageView;
+@property (weak, nonatomic) IBOutlet UILabel *onePayLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ThreeLabel;
+@property (weak, nonatomic) IBOutlet UIView *backView;
+
+@end

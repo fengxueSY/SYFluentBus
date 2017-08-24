@@ -1,0 +1,96 @@
+//
+//  FBMyOrderDetailsViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderDetailsViewController.h"
+#import "FBMyOrderDetailsUpView.h"
+#import "FBMyOrderDetailsDownView.h"
+#import "FBRouteViewController.h"
+
+@interface FBMyOrderDetailsViewController ()
+
+@end
+
+@implementation FBMyOrderDetailsViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"订单详情";
+    [self creatNaBarButton];
+#pragma mark - 根据不同的订单状态显示不同的底部view
+    [self creatView:@"1"];
+}
+-(void)creatView:(NSString *)type{
+    FBMyOrderDetailsUpView * upView = [[[NSBundle mainBundle]loadNibNamed:@"FBMyOrderDetailsUpView" owner:self options:0]lastObject];
+    upView.frame = CGRectMake(0, 64, SCREEN_WIDTH, 234);
+    [self.view addSubview:upView];
+
+    FBMyOrderDetailsDownView * downView = [[[NSBundle mainBundle]loadNibNamed:@"FBMyOrderDetailsDownView" owner:self options:0]lastObject];
+    downView.frame = CGRectMake(0, Max_Y(upView) + 12, SCREEN_WIDTH, 100);
+    [self.view addSubview:downView];
+#pragma mark - 根据不同的订单状态显示不同的底部button
+    [self setButtonView:@"1"];
+}
+-(void)setButtonView:(NSString *)orderStyle{
+    UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT * 10 / 11, SCREEN_WIDTH, SCREEN_HEIGHT / 11)];
+    backView.backgroundColor = UIColorWithRGB(230, 230, 230, 1);
+    
+    float viewW = SCREEN_WIDTH;
+    float viewH = SCREEN_HEIGHT / 11;
+    
+    UIButton * button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    button1.frame = CGRectMake(viewW / 12, viewH / 6, viewW / 4, viewH * 4 / 6);
+    [button1.layer setMasksToBounds:YES];
+    [button1.layer setCornerRadius:5];
+    [button1 setTitle:@"取消" forState:UIControlStateNormal];
+    [button1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    button1.backgroundColor = UIColorWithRGB(190, 190, 190, 1);
+    [backView addSubview:button1];
+
+    UIButton * button2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    button2.frame = CGRectMake(viewW * 5 / 12, viewH / 6, viewW / 2, viewH * 4 / 6);
+    [button2.layer setMasksToBounds:YES];
+    [button2.layer setCornerRadius:5];
+    [button2 setTitle:@"去支付" forState:UIControlStateNormal];
+    [button2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    button2.backgroundColor = UIColorFromRGB(0x7BE653);
+    [backView addSubview:button2];
+    
+    [self.view addSubview:backView];
+}
+-(void)creatNaBarButton{
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    
+    [self.rightButtonItem setImage:[UIImage imageNamed:@"common_icon_nav"] forState:UIControlStateNormal];
+    [self.rightButtonItem addTarget:self action:@selector(searchRouteAction) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.rightButtonItem];
+}
+-(void)searchRouteAction{
+    FBRouteViewController * route = [[FBRouteViewController alloc]init];
+    route.viewStyle = @"3";
+    [self.navigationController pushViewController:route animated:YES];
+}
+-(void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

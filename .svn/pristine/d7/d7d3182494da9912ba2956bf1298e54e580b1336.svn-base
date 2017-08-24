@@ -1,0 +1,125 @@
+//
+//  FBOrderViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBOrderViewController.h"
+#import "FBOrderCell.h"
+#import "FBOrderHeadView.h"
+#import "FBRouteViewController.h"
+
+@interface FBOrderViewController ()<UISearchBarDelegate>{
+    EMSearchBar * _searchBar;
+    NSMutableArray * dataArray;//数据源
+}
+
+@end
+
+@implementation FBOrderViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSArray * array = @[@"2",@"6",@"3",@"6",@"4",@"3",@"2",@"2",@"2"];
+    dataArray = [[NSMutableArray alloc]initWithArray:array];
+    [self creatBaseTabelView];
+}
+-(void)creatBaseTabelView{
+    _searchBar = [[EMSearchBar alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 40)];
+    _searchBar.backgroundColor = UIColorFromRGB(0xe5e5e5);
+    _searchBar.placeholder = @"站点搜索";
+    _searchBar.delegate = self;
+    _searchBar.showsCancelButton = YES;
+    [_searchBar setCancelButtonTitle:@"取消"];
+    [self.view addSubview:_searchBar];
+    
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.estimatedRowHeight = 73;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:_tableView];
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return dataArray.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 121;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    for (int i = 0; i < dataArray.count; i++) {
+        if (section == i) {
+            return [dataArray[i] integerValue];
+        }
+    }
+    return 0;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [tableView fd_heightForCellWithIdentifier:@"ID" cacheByIndexPath:indexPath configuration:^(id cell) {
+        
+    }];
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    FBOrderHeadView * headV = [[[NSBundle mainBundle]loadNibNamed:@"FBOrderHeadView" owner:self options:0]lastObject];
+    headV.userInteractionEnabled = YES;
+    headV.tag = section + 190000;
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeSectionNumberAction:)];
+    [headV addGestureRecognizer:tap];
+    headV.frame = CGRectMake(0, 0, SCREEN_WIDTH, 121);
+    return headV;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellID = @"ID";
+    BOOL isRes = NO;
+    if (!isRes) {
+        [_tableView registerNib:[UINib nibWithNibName:@"FBOrderCell" bundle:nil] forCellReuseIdentifier:cellID];
+    }
+    FBOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    FBRouteViewController * route = [[FBRouteViewController alloc]init];
+    route.viewStyle = @"2";
+    [self.navigationController pushViewController:route animated:YES];
+}
+-(void)changeSectionNumberAction:(UITapGestureRecognizer *)sender{
+    NSInteger a = sender.view.tag - 190000;
+
+    if ([dataArray[a] integerValue] != 0) {
+        [dataArray replaceObjectAtIndex:a withObject:@"0"];
+    }else{
+        [dataArray replaceObjectAtIndex:a withObject:@"2"];
+    }
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:a] withRowAnimation:UITableViewRowAnimationFade];
+
+}
+#pragma mark - searchBar DELEGATE
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [_searchBar resignFirstResponder];
+}
+-(void)searchBarTextDidBeginEditing:(UISearchBar*)searchBar{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
+    [btn setTitle:@"取消" forState:UIControlStateNormal];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

@@ -1,0 +1,11 @@
+//c函数封装URL，为了更加方便操作
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#pragma marlk --- 例
+/**
+ *  登录URL
+ */
+NSString * loginMyApp();
+
+NSString * lap(NSString * pre1,NSString * pre2);

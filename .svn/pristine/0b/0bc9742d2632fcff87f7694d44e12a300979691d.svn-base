@@ -1,0 +1,52 @@
+//
+//  FBMyOrderCell.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "FBMyOrderModel.h"
+@protocol FBMyOrderCellDelegate <NSObject>
+/**
+ *  去支付
+ */
+-(void)goPayOrder:(FBMyOrderModel *)myOrderModel;
+/**
+ *  申请退款
+ */
+-(void)applyForRefund:(FBMyOrderModel *)myOrderModel;
+/**
+ *  取消订单
+ */
+-(void)cancalOrder:(FBMyOrderModel *)myOrderModel;
+/**
+ *  点击出现日历
+ */
+-(void)showCalendar:(NSArray *)calendarArray;
+@end
+
+@interface FBMyOrderCell : UITableViewCell
+
+@property (nonatomic,assign) id <FBMyOrderCellDelegate>delegate;
+
+@property (weak, nonatomic) IBOutlet UILabel *upBackLabel;
+@property (weak, nonatomic) IBOutlet UILabel *orderNmuberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *payStyleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *startLabel;
+@property (weak, nonatomic) IBOutlet UILabel *endLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nowTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *moneyLabel;
+@property (weak, nonatomic) IBOutlet UILabel *effectiveTimeLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *startStationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *orderTimeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *cancalButton;
+@property (weak, nonatomic) IBOutlet UIImageView *styleImageView;
+@property (weak, nonatomic) IBOutlet UIButton *calendarButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *tickeType;
+@property (weak, nonatomic) IBOutlet UIButton *goPayButton;
+@property (nonatomic,strong) FBMyOrderModel * myOrderModel;
+@end

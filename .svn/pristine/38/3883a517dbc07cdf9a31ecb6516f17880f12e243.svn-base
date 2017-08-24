@@ -1,0 +1,75 @@
+//
+//  FBOrderCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/30.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBOrderCell.h"
+#import "FBOrderCellCollectionCell.h"
+#import <QuartzCore/QuartzCore.h>
+@implementation FBOrderCell
+{
+    NSInteger number;
+}
+-(void)drawRect:(CGRect)rect{
+    [super drawRect:rect];
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();
+    //设置虚线颜色
+    CGContextSetStrokeColorWithColor(currentContext, UIColorFromRGB(0x999999).CGColor);
+    //设置虚线宽度
+    CGContextSetLineWidth(currentContext, 1);
+    CGContextSetAlpha(currentContext, 1);
+    //设置虚线绘制起点
+    CGContextMoveToPoint(currentContext, 10, 49);
+    //设置虚线绘制终点
+    CGContextAddLineToPoint(currentContext, self.frame.origin.x + self.frame.size.width, 49);
+    //设置虚线排列的宽度间隔:下面的arr中的数字表示先绘制3个点再绘制1个点
+    CGFloat arr[] = {5,1};
+    //下面最后一个参数“1”代表排列的个数。
+    CGContextSetLineDash(currentContext, 0, arr, 1);
+    CGContextDrawPath(currentContext, kCGPathStroke);
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    UICollectionViewFlowLayout * layout = [[UICollectionViewFlowLayout alloc]init];
+    layout.itemSize = CGSizeMake(SCREEN_WIDTH / 5, 50);
+    layout.sectionInset = UIEdgeInsetsMake(10, SCREEN_WIDTH / 40, 10, SCREEN_WIDTH / 40);
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    [self.collectionView setCollectionViewLayout:layout];
+    self.collectionView.backgroundColor = whiteUnifyColor;
+    self.collectionView.scrollEnabled = NO;
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"FBOrderCellCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"ID"];
+
+}
+-(void)setDic:(NSDictionary *)dic{
+    number = [[dic objectForKey:@"1"] integerValue];
+    [self.collectionView reloadData];
+
+}
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return number;
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellID = @"ID";
+    FBOrderCellCollectionCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+    return cell;
+}
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    //现在先传递数字，后期有数据的话可以传递model
+    NSString * str = [NSString stringWithFormat:@"%ld",indexPath.row];
+    _selectBlock(str);
+}
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

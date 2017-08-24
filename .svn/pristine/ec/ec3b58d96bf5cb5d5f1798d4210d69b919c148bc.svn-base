@@ -1,0 +1,14 @@
+platform:ios,"8.0"
+target 'FluentBus' do
+pod 'AFNetworking', '~> 3.0.1'
+pod 'YYModel'
+pod 'SDWebImage'
+pod 'Masonry'
+pod 'AMap3DMap'
+pod 'AMapSearch'
+pod 'MJRefresh'
+pod 'Bugly'
+pod 'MOBFoundation'
+pod 'CocoaAsyncSocket'
+pod 'AMapNavi'
+end

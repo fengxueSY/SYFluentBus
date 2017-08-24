@@ -1,0 +1,51 @@
+//
+//  FBOrderCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/30.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBOrderCell.h"
+#import "FBOrderCellCollectionCell.h"
+
+@implementation FBOrderCell
+{
+    NSInteger number;
+}
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    UICollectionViewFlowLayout * layout = [[UICollectionViewFlowLayout alloc]init];
+    layout.itemSize = CGSizeMake(SCREEN_WIDTH / 5, 55);
+    layout.sectionInset = UIEdgeInsetsMake(5, SCREEN_WIDTH / 40, 5, SCREEN_WIDTH / 40);
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    [self.collectionView setCollectionViewLayout:layout];
+    self.collectionView.backgroundColor = whiteUnifyColor;
+    self.collectionView.scrollEnabled = NO;
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"FBOrderCellCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"ID"];
+
+}
+-(void)setDic:(NSDictionary *)dic{
+    number = [[dic objectForKey:@"1"] integerValue];
+    [self.collectionView reloadData];
+
+}
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return number;
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellID = @"ID";
+    FBOrderCellCollectionCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
+    return cell;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

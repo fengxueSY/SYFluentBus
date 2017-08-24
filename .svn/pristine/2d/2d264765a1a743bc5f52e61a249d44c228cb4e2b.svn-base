@@ -1,0 +1,17 @@
+//
+//  FBNeedListRouteModel.h
+//  FluentBus
+//
+//  Created by 张俊辉 on 17/1/9.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBNeedListRouteModel : NSObject
+
+@property (nonatomic,assign) NSInteger staindex;
+
+@property (nonatomic,copy) NSString *sname;
+
+@end

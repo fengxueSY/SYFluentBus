@@ -1,0 +1,15 @@
+//
+//  FBMyOrderDetailsThreeView.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/18.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface FBMyOrderDetailsThreeView : UIView
+@property (weak, nonatomic) IBOutlet UILabel *ConTextLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+@end

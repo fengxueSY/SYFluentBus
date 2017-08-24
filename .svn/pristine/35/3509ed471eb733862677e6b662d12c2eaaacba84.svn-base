@@ -1,0 +1,93 @@
+//
+//  FBTopUpCardViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTopUpCardViewController.h"
+#import "FBTopUpViewController.h"
+
+@interface FBTopUpCardViewController ()
+@property (weak, nonatomic) IBOutlet UIView *backView;
+@property (weak, nonatomic) IBOutlet UIImageView *disImageView;
+@property (weak, nonatomic) IBOutlet UIButton *topUpButton;
+@property (nonatomic,strong) UILabel * moneyLabel;
+@property (nonatomic,strong) UIButton * eyeButton;
+@property (nonatomic) BOOL isShow;
+@property (nonatomic,strong) NSString * moneyNumber;
+- (IBAction)topUpButtonAction:(id)sender;
+
+@end
+
+@implementation FBTopUpCardViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"储值卡";
+    _isShow = YES;
+    [self.liftButtonItem addTarget:self action:@selector(goBcke) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    [self eyeButtonAction];
+}
+-(void)eyeButtonAction{
+    if (_isShow == NO) {
+        _isShow = YES;
+        NSString * numberStr1 = @"*****";
+        float moneyW = [PublicMethod handelWideContent:numberStr1 AndFontsize:16 AndMaxsize:CGSizeMake(10000, 46)];
+        float labelX = (SCREEN_WIDTH - moneyW - 20) / 2;
+        self.moneyLabel.text = numberStr1;
+        self.moneyLabel.frame = CGRectMake(labelX, 67, moneyW, 40);
+        self.eyeButton.frame = CGRectMake(Max_X(_moneyLabel) + 4, 79, 16, 16);
+    }else{
+        _isShow = NO;
+        NSString * numberStr2 = @"999999999";
+        float moneyW = [PublicMethod handelWideContent:numberStr2 AndFontsize:16 AndMaxsize:CGSizeMake(10000, 46)];
+        float labelX = (SCREEN_WIDTH - moneyW - 20) / 2;
+        self.moneyLabel.text = numberStr2;
+        self.moneyLabel.frame = CGRectMake(labelX, 67, moneyW, 40);
+        self.eyeButton.frame = CGRectMake(Max_X(_moneyLabel) + 4, 79, 16, 16);
+    }
+}
+-(UILabel *)moneyLabel{
+    if (!_moneyLabel) {
+        _moneyLabel = [[UILabel alloc]init];
+        _moneyLabel.textAlignment = NSTextAlignmentRight;
+        _moneyLabel.font = FONT(16);
+        [self.view addSubview:_moneyLabel];
+    }
+    return _moneyLabel;
+}
+-(UIButton *)eyeButton{
+    if (!_eyeButton) {
+        _eyeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _eyeButton.backgroundColor = [UIColor redColor];
+        [_eyeButton addTarget:self action:@selector(eyeButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_eyeButton];
+    }
+    return _eyeButton;
+}
+-(void)goBcke{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (IBAction)topUpButtonAction:(id)sender {
+    FBTopUpViewController * topUp = [[FBTopUpViewController alloc]init];
+    [self.navigationController pushViewController:topUp animated:YES];
+}
+@end

@@ -1,0 +1,19 @@
+//
+//  FBOrderCellCollectionCell.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/5.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "FBOrderProductsShiftsModel.h"
+
+@interface FBOrderCellCollectionCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *upImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *leftOverLabel;
+@property (weak, nonatomic) IBOutlet UIView *backView;
+@property (nonatomic,strong) FBOrderProductsShiftsModel * productsShiftsModel;
+@end

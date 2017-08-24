@@ -1,0 +1,31 @@
+//
+//  FBNeedListModel.h
+//  FluentBus
+//
+//  Created by 张俊辉 on 17/1/6.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBNeedListModel : NSObject
+//起点
+@property (nonatomic,copy) NSString *staname;
+//终点
+@property (nonatomic,copy) NSString *etaname;
+//地图类型
+@property (nonatomic,copy) NSString *mtype;
+//途径点描述
+@property (nonatomic,copy) NSString *Mydescription;
+//出发时间
+@property (nonatomic,copy) NSString *stime;
+//出行类型
+@property (nonatomic,assign) NSInteger dtype;
+//次票价
+@property (nonatomic,assign) double aprice;
+//越票价
+@property (nonatomic,assign) double mprice;
+//操作者
+@property (nonatomic,copy) NSString *creator;
+
+@end

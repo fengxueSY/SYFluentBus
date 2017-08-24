@@ -1,0 +1,57 @@
+//
+//  FBOrderModel.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/6.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBOrderModel.h"
+
+@implementation FBOrderModel
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{@"stationId" : @"id"};
+}
+
++(void)getLineListParameter:(id)parameter Success:(void (^)(id))seccess Fail:(void (^)(id))fail{
+    [OCNetworkingTool POSTWithUrl:getLineList() withParams:parameter success:^(id responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSDictionary * dicData = [dic objectForKey:@"data"];
+        NSArray * arralDataList = [dicData objectForKey:@"dataList"];
+        if (arralDataList.count > 0 && [[dic objectForKey:@"code"] integerValue] == 200) {
+            NSMutableArray * dataArray = [[NSMutableArray alloc]init];
+            [arralDataList enumerateObjectsUsingBlock:^(NSDictionary * dicList, NSUInteger idx, BOOL * _Nonnull stop) {
+                FBOrderModel * model = [FBOrderModel yy_modelWithDictionary:dicList];
+                [dataArray addObject:model];
+            }];
+            seccess(dataArray);
+        }else{
+            fail(@"暂无数据信息");
+        }
+        DBLog(@"获取线路   %@",responseObject);
+    } fail:^(NSError *error) {
+        DBLog(@"shibai   %@",error);
+        fail(@"网络请求失败,请重试");
+    }];
+}
+//模糊搜索
++(void)queryStationName:(NSDictionary *)stationName Success:(void (^)(id))seccess Fail:(void (^)(id))fail{
+    [OCNetworkingTool POSTWithUrl:queryStation() withParams:stationName success:^(id responseObject) {
+        DBLog(@"---------%@",responseObject);
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSArray * dataArray = [dic objectForKey:@"data"];
+        if ([[dic objectForKey:@"code"] integerValue] == 200 && dataArray.count > 0) {
+            NSMutableArray * array = [[NSMutableArray alloc]init];
+            [dataArray enumerateObjectsUsingBlock:^(NSDictionary * numberDic, NSUInteger idx, BOOL * _Nonnull stop) {
+                FBOrderModel * model = [FBOrderModel yy_modelWithDictionary:numberDic];
+                [array addObject:model];
+            }];
+            seccess(array);
+        }else{
+            fail(@"暂无数据");
+        }
+    } fail:^(NSError *error) {
+        fail(@"网络请求错误，请重新请求");
+    }];
+}
+@end

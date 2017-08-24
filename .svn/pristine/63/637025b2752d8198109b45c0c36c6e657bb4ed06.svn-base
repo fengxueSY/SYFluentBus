@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="FBConfirmOrderCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="buyticket_wechat" translatesAutoresizingMaskIntoConstraints="NO" id="NyF-RW-zxT">
+                        <rect key="frame" x="8" y="20" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="DLh-Jx-aGh"/>
+                            <constraint firstAttribute="width" constant="15" id="eXU-rt-1l2"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="支付宝" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWQ-Me-tbg">
+                        <rect key="frame" x="29" y="19" width="43" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="confirmorder_zhifufangshi" translatesAutoresizingMaskIntoConstraints="NO" id="bpK-Nh-dPT">
+                        <rect key="frame" x="297" y="20" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="6zD-Yz-BaM"/>
+                            <constraint firstAttribute="width" constant="15" id="oJg-Yc-3ZM"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="触发站点" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTP-fG-Tjh">
+                        <rect key="frame" x="5" y="10" width="58" height="35.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017年12粤 共30天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EBb-hn-00z">
+                        <rect key="frame" x="187" y="24.5" width="125" height="6.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Phl-45-5YC">
+                        <rect key="frame" x="0.0" y="54" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="M7P-f8-VGs"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="bpK-Nh-dPT" secondAttribute="trailing" constant="8" id="11L-cd-msL"/>
+                    <constraint firstAttribute="trailing" secondItem="Phl-45-5YC" secondAttribute="trailing" id="6HZ-2L-YWm"/>
+                    <constraint firstItem="NyF-RW-zxT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="7jZ-ij-h8F"/>
+                    <constraint firstItem="Phl-45-5YC" firstAttribute="top" secondItem="NyF-RW-zxT" secondAttribute="bottom" constant="19" id="8ZQ-b0-s3s"/>
+                    <constraint firstItem="EBb-hn-00z" firstAttribute="centerY" secondItem="MTP-fG-Tjh" secondAttribute="centerY" id="NrO-cj-JKY"/>
+                    <constraint firstItem="EBb-hn-00z" firstAttribute="top" secondItem="MTP-fG-Tjh" secondAttribute="bottom" constant="-21" id="R4R-xB-xxn"/>
+                    <constraint firstItem="ZWQ-Me-tbg" firstAttribute="centerY" secondItem="bpK-Nh-dPT" secondAttribute="centerY" id="WxO-Lt-fqj"/>
+                    <constraint firstAttribute="bottom" secondItem="Phl-45-5YC" secondAttribute="bottom" id="Yhr-3C-cz6"/>
+                    <constraint firstItem="MTP-fG-Tjh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ZQ0-nj-YuM"/>
+                    <constraint firstItem="MTP-fG-Tjh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="dfg-up-tde"/>
+                    <constraint firstItem="ZWQ-Me-tbg" firstAttribute="centerY" secondItem="NyF-RW-zxT" secondAttribute="centerY" id="hK7-LG-ys6"/>
+                    <constraint firstItem="ZWQ-Me-tbg" firstAttribute="leading" secondItem="NyF-RW-zxT" secondAttribute="trailing" constant="6" id="rpO-xQ-cyd"/>
+                    <constraint firstAttribute="trailing" secondItem="EBb-hn-00z" secondAttribute="trailing" constant="8" id="sxm-Oi-Zmv"/>
+                    <constraint firstItem="NyF-RW-zxT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="wU8-bC-9fm"/>
+                    <constraint firstAttribute="bottom" secondItem="MTP-fG-Tjh" secondAttribute="bottom" constant="9" id="z10-Bb-qNl"/>
+                    <constraint firstItem="Phl-45-5YC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ztf-BZ-lPF"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="oneLeadLabel" destination="MTP-fG-Tjh" id="Uso-T3-OLD"/>
+                <outlet property="oneTrailLabel" destination="EBb-hn-00z" id="BeP-9Q-iY6"/>
+                <outlet property="twoHeadImageView" destination="NyF-RW-zxT" id="5Qz-Y3-A19"/>
+                <outlet property="twoNameLabel" destination="ZWQ-Me-tbg" id="4wT-gy-n7Q"/>
+                <outlet property="twoTrailImageView" destination="bpK-Nh-dPT" id="j5C-cU-kaY"/>
+            </connections>
+            <point key="canvasLocation" x="-2" y="40"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="buyticket_wechat" width="16" height="16"/>
+        <image name="confirmorder_zhifufangshi" width="12" height="12"/>
+    </resources>
+</document>

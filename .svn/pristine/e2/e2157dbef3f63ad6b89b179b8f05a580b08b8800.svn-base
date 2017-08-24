@@ -1,0 +1,28 @@
+//
+//  FBMyOrderDetailsDownView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderDetailsDownView.h"
+
+@implementation FBMyOrderDetailsDownView
+-(void)setDetailsModel:(FBMyOrderDetailsModel *)detailsModel{
+    self.orderTimeLabel.text = [PublicMethod getTimeString_13:detailsModel.createTime];
+    self.orderNumberLabel.text = detailsModel.orderId;
+    if ([detailsModel.orderStatus integerValue] == 0) {
+        self.orderTybeLabel.text = @"待支付";
+    }else if ([detailsModel.orderStatus integerValue] == 1){
+        self.orderTybeLabel.text = @"已取消";
+    }else if ([detailsModel.orderStatus integerValue] == 2){
+        self.orderTybeLabel.text = @"已支付";
+    }else if ([detailsModel.orderStatus integerValue] == 3){
+        self.orderTybeLabel.text = @"已过期";
+    }else{
+        self.orderTybeLabel.text = @"退款中";
+    }
+
+}
+@end

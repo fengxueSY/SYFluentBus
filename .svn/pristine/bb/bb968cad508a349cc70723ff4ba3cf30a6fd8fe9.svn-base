@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="FBMyOrderDetailsThreeView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="退款信息" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDz-cj-uV0">
+                    <rect key="frame" x="16" y="9" width="57.5" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="5bM-pW-ZYO"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="谁离开的教案及是否里的水都看见哈伦裤时间大概和速度快拉黑；深刻的好感SAKLDJ " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6l-hr-ljF">
+                    <rect key="frame" x="16" y="38" width="343" height="33.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.85882352941176465" green="0.43529411764705883" blue="0.023529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="kDz-cj-uV0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="L9y-lG-Bux"/>
+                <constraint firstAttribute="trailing" secondItem="h6l-hr-ljF" secondAttribute="trailing" constant="16" id="PMC-TU-CJp"/>
+                <constraint firstItem="h6l-hr-ljF" firstAttribute="top" secondItem="kDz-cj-uV0" secondAttribute="bottom" constant="8" id="Pag-7D-idr"/>
+                <constraint firstItem="kDz-cj-uV0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="dt1-Ax-dLM"/>
+                <constraint firstItem="h6l-hr-ljF" firstAttribute="leading" secondItem="kDz-cj-uV0" secondAttribute="leading" id="eSx-JR-8eM"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="ConTextLabel" destination="h6l-hr-ljF" id="VxW-uh-bRi"/>
+            </connections>
+            <point key="canvasLocation" x="-11.5" y="-220.5"/>
+        </view>
+    </objects>
+</document>

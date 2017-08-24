@@ -1,0 +1,18 @@
+//
+//  FBTakeBusCollectionViewCell.h
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface FBTakeBusCollectionViewCell : UICollectionViewCell
+
+@property (weak, nonatomic) IBOutlet UILabel *endAddressLb;
+@property (weak, nonatomic) IBOutlet UILabel *startAddressLb;
+
+@property (nonatomic,copy) NSString *testTitle;
+
+@end

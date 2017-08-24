@@ -1,0 +1,62 @@
+//
+//  FBTopUpMidView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTopUpMidView.h"
+
+@implementation FBTopUpMidView
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+       
+    }
+    return self;
+}
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    NSString * str = @"同意《畅吧用户订票协议》";
+    NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc]initWithString:str];
+    [attStr addAttribute:NSFontAttributeName value:FONT(12) range:NSMakeRange(0,2)];
+    [attStr addAttribute:NSForegroundColorAttributeName value:oneHeadingColor range:NSMakeRange(0, 2)];
+    [attStr addAttribute:NSFontAttributeName value:FONT(12) range:NSMakeRange(3,8)];
+    [attStr addAttribute:NSForegroundColorAttributeName value:blueUnifyColor range:NSMakeRange(3, 8)];
+    self.conLabel.attributedText = attStr;
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(conLabelAction)];
+    [self.conLabel addGestureRecognizer:tap];
+    
+    UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeUserAction)];
+    [self.agreeButton addGestureRecognizer:tap1];
+    
+    [self.button_100 setTitleColor:blueUnifyColor forState:UIControlStateNormal];
+    self.button_100.backgroundColor = whiteUnifyColor;
+    [self.button_100.layer setBorderColor:blueUnifyColor.CGColor];
+    [self.button_100.layer setBorderWidth:1];
+
+    [self.button_200 setTitleColor:blueUnifyColor forState:UIControlStateNormal];
+    self.button_200.backgroundColor = whiteUnifyColor;
+    [self.button_200.layer setBorderColor:blueUnifyColor.CGColor];
+    [self.button_200.layer setBorderWidth:1];
+
+    [self.goPayMoneyButton.layer setMasksToBounds:YES];
+    [self.goPayMoneyButton.layer setCornerRadius:5];
+}
+-(void)conLabelAction{
+    if (_delegate) {
+        [_delegate watchUserDelegate];
+    }
+}
+-(void)changeUserAction{
+    if ([self.agreeButton.image isEqual:UIImageName(@"confirmorder_agree")]) {
+        self.agreeButton.image = UIImageName(@"confirmorder_disagree");
+        self.goPayMoneyButton.userInteractionEnabled = NO;
+        self.goPayMoneyButton.backgroundColor = UIColorFromRGB(0xffffff);
+    }else{
+        self.agreeButton.image = UIImageName(@"confirmorder_agree");
+        self.goPayMoneyButton.userInteractionEnabled = YES;
+        self.goPayMoneyButton.backgroundColor = greenUnifyColor;
+    }}
+@end

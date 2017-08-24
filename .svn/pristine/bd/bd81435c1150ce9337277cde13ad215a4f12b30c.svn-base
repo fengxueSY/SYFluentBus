@@ -1,0 +1,15 @@
+//
+//  FBMyOrderApplyForRefundViewController.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/2/8.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBBaseViewController.h"
+#import "FBMyOrderModel.h"
+@interface FBMyOrderApplyForRefundViewController : FBBaseViewController<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong) UITableView * tableView;
+@property (nonatomic,copy) NSString * orderID;
+@property (nonatomic,strong) FBMyOrderModel * myOrderModel;
+@end

@@ -1,0 +1,15 @@
+//
+//  FBString.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/27.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBString.h"
+
+@implementation FBString
+
+//NSString * const IMAGE_HTTPS = @"http://183.238.51.33:8080/";
+
+@end

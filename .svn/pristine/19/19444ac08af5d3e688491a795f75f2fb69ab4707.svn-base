@@ -1,0 +1,216 @@
+//
+//  FBTakeBusViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTakeBusViewController.h"
+#import "FBTakeBusCollectionViewCell.h"
+#import "FBRouteViewController.h"
+#import "FBTopUpCardViewController.h"
+#import "JF_CalendarView.h"
+
+@interface FBTakeBusViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,FBTakeBusCollectionViewCellDelegate,JF_CalendarViewDelegate>
+{
+    float _value;
+}
+
+@property (nonatomic,strong) UICollectionView *collectionView;
+
+@property (nonatomic,strong) UICollectionViewFlowLayout *flowLayout;
+
+@property (nonatomic,strong) NSMutableArray *collectionDataSource;
+
+@property(nonatomic,strong) JF_CalendarView *calendarView;
+//自定义View
+@property (nonatomic,strong) UIView *blackView;
+
+@end
+
+@implementation FBTakeBusViewController
+
+static NSString *Identifier = @"mytakeBusCell";
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _value = [UIScreen mainScreen].brightness;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEndBackGround) name:UIApplicationWillResignActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground) name:UIApplicationDidBecomeActiveNotification object:nil];
+    //UIApplicationWillEnterForegroundNotification
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[UIScreen mainScreen] setBrightness:1];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[UIScreen mainScreen] setBrightness:_value];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_icon_nav" target:self action:@selector(toMap)];
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithTitle:@"储值卡" target:self action:@selector(toStoredValueCard)];
+    
+    [self setCollectionView];
+    
+}
+
+#pragma mark - 推入后台方法
+
+- (void)willEndBackGround{
+    
+    [[UIScreen mainScreen] setBrightness:_value];
+    DBLog(@"%f",_value);
+}
+
+#pragma mark - 推入前台
+
+- (void)willEnterForeground{
+    
+    [[UIScreen mainScreen] setBrightness:1];
+}
+
+
+//地图跳转
+-(void)toMap
+{
+    FBRouteViewController * route = [[FBRouteViewController alloc]init];
+    route.viewStyle = @"3";
+    [self.navigationController pushViewController:route animated:YES];
+}
+
+//储值卡跳转
+-(void)toStoredValueCard
+{
+    FBTopUpCardViewController * topUp = [[FBTopUpCardViewController alloc]init];
+    [self.navigationController pushViewController:topUp animated:YES];
+}
+
+- (void)setCollectionView
+{
+    // 设置flowLayout
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT-64-44);
+    self.flowLayout.minimumLineSpacing = 0;
+    self.flowLayout.minimumInteritemSpacing = 0;
+    
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.flowLayout];
+    
+    self.collectionView.backgroundColor = UIColorFromRGB(0xf5f5f5);
+    
+    self.collectionView.pagingEnabled = YES;
+    // 设置collectionView
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate   = self;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"FBTakeBusCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:Identifier];
+    [self.view addSubview:self.collectionView];
+    
+    //约束_taskTableView
+    WeakSelf(weakSelf);
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.mas_equalTo(weakSelf.view);
+        
+    }];
+}
+
+#pragma mark - cell的代理方法（点击打开日历）
+
+- (void)toOpenCalendarView
+{
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
+    layout.minimumInteritemSpacing=0;
+    self.calendarView=[[JF_CalendarView alloc]initWithFrame:CGRectMake(0, 30, 300, 350) collectionViewLayout:layout];
+    self.calendarView.myDelegate = self;
+    NSArray *a=[NSArray arrayWithObjects:@"20170127", @"20170128",@"20170129",@"20170130",@"20170131",@"20170201",@"20170202",nil];
+    [self.calendarView.registerArr addObjectsFromArray:a];
+    //  self.calendarView.backgroundColor=[UIColor purpleColor];
+    self.calendarView.center=self.view.center;
+    [self.view addSubview:self.blackView];
+    [self.view addSubview:self.calendarView];
+}
+//日历关闭回调
+-(void)toClosecalendarView
+{
+    [self.blackView removeFromSuperview];
+    [self.calendarView removeFromSuperview];
+}
+
+#pragma mark - collectionView代理
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 10;//self.collectionDataSource.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FBTakeBusCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:Identifier forIndexPath:indexPath];
+    cell.testTitle = @"高普路高普路高普路高普路高普路高普路";
+    cell.delegate = self;
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma - mark 懒加载
+-(NSMutableArray *)collectionDataSource
+{
+    if (_collectionDataSource == nil) {
+        _collectionDataSource = [NSMutableArray array];
+    }
+    return _collectionDataSource;
+}
+
+- (UICollectionViewFlowLayout *)flowLayout {
+    if (_flowLayout == nil) {
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    }
+    return _flowLayout;
+}
+
+- (UIView *)blackView
+{
+    if (_blackView ==nil) {
+        
+        _blackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _blackView.backgroundColor = [UIColor blackColor];
+        _blackView.alpha = 0.3;
+    }
+    return _blackView;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+@end

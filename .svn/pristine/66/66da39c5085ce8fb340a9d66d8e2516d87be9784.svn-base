@@ -1,0 +1,38 @@
+//
+//  FBTakeBusCollectionViewCell.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTakeBusCollectionViewCell.h"
+
+@implementation FBTakeBusCollectionViewCell
+
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    
+}
+
+-(void)setTestTitle:(NSString *)testTitle
+{
+    self.startAddressLb.text = testTitle;
+    self.endAddressLb.text = testTitle;
+    
+    float startWidth = [PublicMethod getLabelWidth:17 fontSize:14 text:self.startAddressLb.text];
+    float endWidth = [PublicMethod getLabelWidth:17 fontSize:14 text:self.endAddressLb.text];
+    
+    //78为计算所得
+    if(endWidth+startWidth+78>304)
+    {
+        self.backViewWidth.constant =endWidth+startWidth+100;
+
+    }else{
+        self.backViewWidth.constant = 304;
+    }
+    
+}
+
+@end

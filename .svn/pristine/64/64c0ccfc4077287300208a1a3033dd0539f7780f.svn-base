@@ -1,0 +1,14 @@
+//
+//  FBMyOrderModel.h
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/11.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBMyOrderModel : NSObject
+//获取订单列表
++(void)userOrderListParameter:(NSString *)parameter Success:(void(^)(id successed))seccess Fail:(void(^)(id failed))fail;
+@end

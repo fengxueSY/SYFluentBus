@@ -1,0 +1,33 @@
+//
+//  FBMyOrderCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyOrderCell.h"
+
+@implementation FBMyOrderCell
++(instancetype)cellTableView:(UITableView *)tableView{
+    static NSString * cellID = @"ID";
+    FBMyOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass(self) owner:self options:0]lastObject];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    return cell;
+}
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

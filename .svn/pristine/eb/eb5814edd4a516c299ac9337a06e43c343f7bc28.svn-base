@@ -1,0 +1,32 @@
+//
+//  FBMyOrderModel.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/11.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBMyOrderModel.h"
+
+@implementation FBMyOrderModel
++(void)userOrderListParameter:(NSString *)parameter Success:(void (^)(id))seccess Fail:(void (^)(id))fail{
+    
+    NSDictionary * sendDic = @{@"PageIndex":parameter,@"PageSize":[NSNumber numberWithInt:20]};
+    [OCNetworkingTool POSTWithUrl:userOrderList() withParams:sendDic success:^(id responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSArray * dataArray = [dic objectForKey:@"data"];
+        if ([[dic objectForKey:@"code"] integerValue] == 200 && dataArray.count > 0) {
+            NSMutableArray * successArray = [[NSMutableArray alloc]init];
+            [dataArray enumerateObjectsUsingBlock:^(NSDictionary * dataDic, NSUInteger idx, BOOL * _Nonnull stop) {
+                FBMyOrderModel * model = [FBMyOrderModel yy_modelWithDictionary:dataDic];
+                [successArray addObject:model];
+            }];
+            seccess(successArray);
+        }else{
+            fail(@"暂无订单信息");
+        }
+    } fail:^(NSError *error) {
+        fail(error);
+    }];
+}
+@end

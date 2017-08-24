@@ -1,0 +1,36 @@
+//
+//  FBNSStringURL.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/26.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBNSStringURL.h"
+
+static NSString * URL1 = @"http://183.238.51.33:8080/ia.bus.api";
+//公钥
+static NSString * url3 = @"http://183.238.51.33:8080/user-api";
+
+//登录
+NSString * loginMyApp(){
+    return [NSString stringWithFormat:@"%@/User/loginUser",URL1];
+}
+
+//获取公钥的膜和指数
+NSString *getLoginKey(){
+    return [NSString stringWithFormat:@"%@/secret/regkey",url3];
+}
+//获取验证码
+NSString *getVode(){
+    return [NSString stringWithFormat:@"%@/User/getVerificationCode",URL1];
+}
+//注册
+NSString *registerUrl(){
+     return [NSString stringWithFormat:@"%@/User/regUser",URL1];
+}
+
+
+NSString * lap(NSString * pre1,NSString * pre2){
+    return [NSString stringWithFormat:@"%@/000/%@--%@",URL1,pre1,pre2];
+}

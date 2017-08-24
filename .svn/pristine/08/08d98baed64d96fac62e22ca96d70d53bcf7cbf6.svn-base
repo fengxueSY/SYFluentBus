@@ -1,0 +1,124 @@
+//
+//  FBMySelfViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMySelfViewController.h"
+#import "FBMySelfCell.h"
+#import "FBMyOrderViewController.h"
+#import "FBMyTicketViewController.h"
+#import "FBMySettingViewController.h"
+#import "FBResumeViewController.h"
+#import "FBNewsViewController.h"
+#import "FBTopUpCardViewController.h"
+@interface FBMySelfViewController ()
+{
+    NSArray * titleArray;
+    NSArray * imageArray;
+    NSString * nameStr;
+}
+@end
+
+@implementation FBMySelfViewController
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (_tableView) {
+        [_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    titleArray = @[@"个人资料",@"我的订单",@"我的车票",@"储值卡",@"消息",@"设置"];
+    imageArray = @[@"wode_gerenziliao",@"wode_order",@"wode_ticket",@"wode_valuecard",@"wode_message",@"wode_set"];
+    [self creatBaseUI];
+}
+-(void)creatBaseUI{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    _tableView.backgroundColor = backCommonlyUsedColor;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:_tableView];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 6;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 40;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView * headView = [[UIView alloc]init];
+    headView.backgroundColor = backCommonlyUsedColor;
+    UILabel * numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH / 32, 0, SCREEN_WIDTH * 31 / 32, 40)];
+    numberLabel.font = FONT(14);
+    if (StringNotNilAndNull(self.baseUserInfo.nickName)) {
+        nameStr = [NSString stringWithFormat:@"您好：%@",[UserInfo userInfoWithUserDefaults].nickName];
+    }else{
+        nameStr = [NSString stringWithFormat:@"您好：%@",[UserInfo userInfoWithUserDefaults].userName];
+    }
+    numberLabel.text = nameStr;
+    [headView addSubview:numberLabel];
+    return headView;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    FBMySelfCell * cell = [FBMySelfCell cellTableView:tableView];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = whiteUnifyColor;
+    cell.nameLabel.text = titleArray[indexPath.row];
+    cell.headImage.image = UIImageName(imageArray[indexPath.row]);
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        //个人信息
+        FBResumeViewController * resume = [[FBResumeViewController alloc]init];
+        [self.navigationController pushViewController:resume animated:YES];
+    }
+    if (indexPath.row == 1) {
+        //我的订单
+        FBMyOrderViewController * myOrder = [[FBMyOrderViewController alloc]init];
+        [self.navigationController pushViewController:myOrder animated:YES];
+    }
+    if (indexPath.row == 2) {
+        //我的车票
+        FBMyTicketViewController * ticket = [[FBMyTicketViewController alloc]init];
+        [self.navigationController pushViewController:ticket animated:YES];
+    }
+    if (indexPath.row == 3) {
+        //储值卡
+        FBTopUpCardViewController * card = [[FBTopUpCardViewController alloc]init];
+        [self.navigationController pushViewController:card animated:YES];
+    }
+    if (indexPath.row == 4) {
+        //消息
+        FBNewsViewController * news = [[FBNewsViewController alloc]init];
+        [self.navigationController pushViewController:news animated:YES];
+    }
+    if (indexPath.row == 5) {
+        //设置
+        FBMySettingViewController * setting = [[FBMySettingViewController alloc]init];
+        [self.navigationController pushViewController:setting animated:YES];
+    }
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

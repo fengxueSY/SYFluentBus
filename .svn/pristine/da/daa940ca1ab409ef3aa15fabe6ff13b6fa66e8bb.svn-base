@@ -1,0 +1,18 @@
+//
+//  FBNSStringURL.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/26.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBNSStringURL.h"
+
+static NSString * URL1 = @"https:121:12:!212342hfsdjfh239/";
+
+NSString * loginMyApp(){
+    return [NSString stringWithFormat:@"%@/api/user/login",URL1];
+}
+NSString * lap(NSString * pre1,NSString * pre2){
+    return [NSString stringWithFormat:@"%@/000/%@--%@",URL1,pre1,pre2];
+}

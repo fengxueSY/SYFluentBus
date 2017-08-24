@@ -1,0 +1,55 @@
+//
+//  FBMyTicketCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyTicketCell.h"
+
+@implementation FBMyTicketCell
++(instancetype)cellTableView:(UITableView *)tableView{
+    static NSString * cellID = @"ID";
+    FBMyTicketCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass(self) owner:self options:0]lastObject];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+-(void)setModel:(FBMyTicketListModel *)model
+{
+    _startAddressLb.text = model.staName;
+    _endAddressLb.text = model.endName;
+    _timeLB.text = model.time;
+    _carPlatNo.text = model.platNo;
+    _upStationLB.text = model.upStationName;
+    _carPlatNo.text = @"123";//model.platNo;
+    _visibleDataLB.text = [NSString stringWithFormat:@"%@ 共%@天",model.validDate,model.dayCount];
+    
+    //票的类型
+    if (model.productType == 1) {
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_week"];
+    }else if (model.productType == 2){
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_month"];
+    }else if (model.productType == 3){
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_season"];
+    }else if (model.productType == 4){
+        _ticketImageView.image = [UIImage imageNamed:@"common_ticket_day"];
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

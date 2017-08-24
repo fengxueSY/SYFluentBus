@@ -1,0 +1,32 @@
+//
+//  FBConfirmPayView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBConfirmPayView.h"
+
+@implementation FBConfirmPayView
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    [self.goPayButton.layer setMasksToBounds:YES];
+    [self.goPayButton.layer setCornerRadius:5];
+    self.goPayButton.backgroundColor = greenUnifyColor;
+//    [self.goPayButton addTarget:self action:@selector(goPayButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    NSString * str = @"同意《畅吧用户订票协议》";
+    NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc]initWithString:str];
+    [attStr addAttribute:NSFontAttributeName value:FONT(12) range:NSMakeRange(0,2)];
+    [attStr addAttribute:NSForegroundColorAttributeName value:oneHeadingColor range:NSMakeRange(0, 2)];
+    [attStr addAttribute:NSFontAttributeName value:FONT(12) range:NSMakeRange(3,8)];
+    [attStr addAttribute:NSForegroundColorAttributeName value:blueUnifyColor range:NSMakeRange(3, 8)];
+    self.delegateLabel.attributedText = attStr;
+
+}
+-(void)goPayButtonAction{
+    if (_delegate) {
+        [_delegate showUserDelegate];
+    }
+}
+@end

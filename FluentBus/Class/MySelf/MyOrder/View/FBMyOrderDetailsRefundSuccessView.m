@@ -1,0 +1,37 @@
+//
+//  FBMyOrderDetailsRefundSuccessView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2017/1/18.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import "FBMyOrderDetailsRefundSuccessView.h"
+
+@implementation FBMyOrderDetailsRefundSuccessView
+
+-(void)setRefundByOrderModel:(FBRefundByOrderModel *)refundByOrderModel{
+    self.moneyLabel.text = [NSString stringWithFormat:@"￥%.2f元",[refundByOrderModel.ActualAmount floatValue] / 100];
+    if ([refundByOrderModel.refundType integerValue] == 1) {
+        self.typeLabel.text = @"原路退回";
+    }else if ([refundByOrderModel.refundType integerValue] == 2){
+        self.typeLabel.text = @"退回钱包";
+    }
+    
+    if ([refundByOrderModel.refundStatus integerValue] == 1) {
+        self.refundSuccessLabel.text = @"待审核";
+    }else if ([refundByOrderModel.refundStatus integerValue] == 2){
+        self.refundSuccessLabel.text = @"处理中";
+    }else if ([refundByOrderModel.refundStatus integerValue] == 3){
+        self.refundSuccessLabel.text = @"已退款";
+    }else if ([refundByOrderModel.refundStatus integerValue] == 4){
+        self.refundSuccessLabel.text = @"已拒绝";
+    }
+    if (refundByOrderModel.refundTime.length < 3) {
+        self.timeLabel.text = [NSString stringWithFormat:@"时间获取失败"];
+    }else{
+        self.timeLabel.text = [PublicMethod getTimeString_13:refundByOrderModel.refundTime];
+    }
+}
+
+@end

@@ -1,0 +1,59 @@
+//
+//  FBMyTicketCell.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyTicketCell.h"
+
+@implementation FBMyTicketCell
++(instancetype)cellTableView:(UITableView *)tableView{
+    static NSString * cellID = @"ID";
+    FBMyTicketCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass(self) owner:self options:0]lastObject];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    [UIView setViewCorner:_ticketTypeLb cornerRadius:2 borderWidth:1 colorRGB:(0xff4d64)];
+}
+
+-(void)setModel:(FBMyTicketListModel *)model
+{
+    _model = model;
+    
+    [self.calendarButton addTarget:self action:@selector(calendarButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    _startAddressLb.text = model.staName;
+    _endAddressLb.text = model.endName;
+    _timeLB.text = model.time;
+    _upStationLB.text = model.upStationName;
+    _carPlatNo.text = model.platNo;
+    _visibleDataLB.text = [NSString stringWithFormat:@"%@ 共%@天",model.validDate,model.dayCount];
+    if (StringNotNilAndNull(model.productTypeName)) {
+        _ticketTypeLb.text = [NSString stringWithFormat:@" %@    ",model.productTypeName];
+    }else{
+        _ticketTypeLb.text = @" 暂无    ";
+    }
+}
+
+-(void)calendarButtonAction{
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(showCalendar:)]) {
+        
+        [_delegate showCalendar:_model.dateList];
+    }
+}
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

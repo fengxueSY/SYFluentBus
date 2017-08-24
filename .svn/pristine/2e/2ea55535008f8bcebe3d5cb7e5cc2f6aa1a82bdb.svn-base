@@ -1,0 +1,27 @@
+//
+//  UserInfo.h
+//  OfficialCar
+//
+//  Created by 张俊辉 on 16/8/29.
+//  Copyright © 2016年 张俊辉. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface UserInfo : NSObject
+
+//@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *userTokenId;
+@property (nonatomic, copy) NSString *userAppId;
+@property (nonatomic, copy) NSString *userName;
+
+//将返回的用户数据存储
++ (instancetype)userInfoWithDict:(NSDictionary *)dict;
+
+//初始化类并取出用户数据
+- (instancetype)initWithUserDefaults;
++ (instancetype)userInfoWithUserDefaults;
+
++ (void)clearUserDefaults;
+
+@end

@@ -1,0 +1,15 @@
+//
+//  FBString.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/27.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBString.h"
+
+@implementation FBString
+NSString * const UMeng_APP_KEY = @"586203838630f5195a000051";
+NSString * const Sina_APP_KEY = @"1343055090";
+NSString * const Sina_App_Secret = @"04190a66d6f1e244755938a3386df3d8";
+@end

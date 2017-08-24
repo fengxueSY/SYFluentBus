@@ -1,0 +1,40 @@
+//
+//  FBNeedListTableViewCell.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBNeedListTableViewCell.h"
+
+@implementation FBNeedListTableViewCell
+
++(instancetype)cellTableView:(UITableView *)tableView{
+    
+    static NSString * cellID = @"needCell";
+    FBNeedListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass(self) owner:self options:0]lastObject];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setTestTitle:(NSString *)testTitle
+{
+    self.gothroughAddressLb.text = testTitle;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

@@ -1,0 +1,26 @@
+//
+//  FBTakeBusCollectionViewCell.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTakeBusCollectionViewCell.h"
+
+@implementation FBTakeBusCollectionViewCell
+
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    
+}
+
+-(void)setTestTitle:(NSString *)testTitle
+{
+    self.startAddressLb.text = testTitle;
+    self.endAddressLb.text = testTitle;
+    
+}
+
+@end

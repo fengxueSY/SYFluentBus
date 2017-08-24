@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2cf2cf7c-afe9-1d4c-bf30-8fbf44439911++5729",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "2cf2cf7c-afe9-1d4c-bf30-8fbf44439911++5729" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2cf2cf7c-afe9-1d4c-bf30-8fbf44439911++5729" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "916BC31F-B811-4D4A-82E6-F319D6D6B2FC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2cf2cf7c-afe9-1d4c-bf30-8fbf44439911++5729" : "%E7%95%85%E5%B7%B4\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FluentBus",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FluentBus.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/192.168.1.252:8080\/svn\/iOSXMWH",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2cf2cf7c-afe9-1d4c-bf30-8fbf44439911++5729"
+    }
+  ]
+}

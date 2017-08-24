@@ -1,0 +1,126 @@
+//
+//  FBResumeViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBResumeViewController.h"
+#import "FBMySettingCell.h"
+#import "FBAlterNameViewController.h"
+@interface FBResumeViewController ()<UIActionSheetDelegate,ZHPickViewDelegate,FBAlterNameViewControllerDelegate>{
+    NSArray * headTitle;
+    NSString * sexStr;
+    NSString * nameStr;
+    NSString * birthSty;
+}
+
+@end
+
+@implementation FBResumeViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self creatBaseUI];
+}
+-(void)creatBaseUI{
+    self.title = @"个人资料";
+    headTitle = @[@"昵称",@"性别",@"生日"];
+    nameStr = @"待完善";
+    sexStr = @"待完善";
+    birthSty = @"待完善";
+    [self.liftButtonItem addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    
+    
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.rowHeight = 50;
+    [self.view addSubview:_tableView];
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return headTitle.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 20;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView * headView = [[UIView alloc]init];
+    headView.backgroundColor = backCommonlyUsedColor;
+    return headView;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellID = @"ID";
+    BOOL isReg = NO;
+    if (!isReg) {
+        [_tableView registerNib:[UINib nibWithNibName:@"FBMySettingCell" bundle:nil] forCellReuseIdentifier:cellID];
+    }
+    FBMySettingCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.headLabel.text = headTitle[indexPath.row];
+    if (indexPath.row == 0) {
+        cell.footLabel.text = nameStr;
+    }else if (indexPath.row == 1){
+        cell.footLabel.text = sexStr;
+    }else{
+        cell.footLabel.text = birthSty;
+    }
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        FBAlterNameViewController * alterName = [[FBAlterNameViewController alloc]init];
+        alterName.delegate = self;
+        [self.navigationController pushViewController:alterName animated:YES];
+    }
+    if (indexPath.row == 1) {
+        UIActionSheet * sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"男",@"女", nil];
+        [sheet showInView:self.view];
+    }
+    if (indexPath.row == 2) {
+        ZHPickView * pick = [[ZHPickView alloc]initDatePickWithDate:[NSDate date] datePickerMode:UIDatePickerModeDate isHaveNavControler:YES];
+        pick.delegate = self;
+        [pick show];
+    }
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        sexStr = @"男";
+    }else{
+        sexStr = @"女";
+    }
+    [_tableView reloadData];
+}
+-(void)toobarDonBtnHaveClick:(ZHPickView *)pickView resultString:(NSString *)resultString{
+    NSArray * dateA = [resultString componentsSeparatedByString:@" "];
+    birthSty = dateA[0];
+    [_tableView reloadData];
+}
+-(void)alterName:(NSString *)name{
+    nameStr = name;
+    [_tableView reloadData];
+}
+-(void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

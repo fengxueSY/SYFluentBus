@@ -1,0 +1,16 @@
+//
+//  FBString.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/27.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBString : NSObject
+#pragma mark - 例子
+
+//#pragma mark - 图片拼接头
+//FOUNDATION_EXPORT NSString * const IMAGE_HTTPS;/**<图片拼接的url*/
+@end

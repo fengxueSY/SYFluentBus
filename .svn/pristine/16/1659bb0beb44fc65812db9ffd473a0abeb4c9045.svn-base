@@ -1,0 +1,90 @@
+//
+//  FBTopUpCardViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTopUpCardViewController.h"
+#import "FBTopUpViewController.h"
+
+@interface FBTopUpCardViewController ()
+@property (weak, nonatomic) IBOutlet UIView *backView;
+@property (weak, nonatomic) IBOutlet UIImageView *disImageView;
+@property (weak, nonatomic) IBOutlet UIButton *topUpButton;
+@property (nonatomic,strong) UILabel * moneyLabel;
+@property (nonatomic,strong) UIButton * eyeButton;
+@property (nonatomic) BOOL isShow;
+@property (nonatomic,strong) NSString * moneyNumber;
+- (IBAction)topUpButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *toUpBut;
+
+@end
+
+@implementation FBTopUpCardViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"储值卡";
+    _isShow = YES;
+    [_toUpBut.layer setMasksToBounds:YES];
+    [_toUpBut.layer setCornerRadius:5];
+    [self.liftButtonItem addTarget:self action:@selector(goBcke) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    [_topUpButton.layer setMasksToBounds:YES];
+    [_topUpButton.layer setCornerRadius:5];
+    [self eyeButtonAction];
+}
+-(void)eyeButtonAction{
+    if (_isShow == NO) {
+        _isShow = YES;
+        [self.eyeButton setImage:UIImageName(@"deposit_card_gray") forState:UIControlStateNormal];
+        NSString * numberStr1 = @"*****";
+        float moneyW = [PublicMethod handelWideContent:numberStr1 AndFontsize:16 AndMaxsize:CGSizeMake(10000, 46)];
+        float labelX = (SCREEN_WIDTH - moneyW - 20) / 2;
+        self.moneyLabel.text = numberStr1;
+        self.moneyLabel.frame = CGRectMake(labelX, 67, moneyW, 40);
+        self.eyeButton.frame = CGRectMake(Max_X(_moneyLabel) + 6, 79, 16, 16);
+    }else{
+        _isShow = NO;
+        [self.eyeButton setImage:UIImageName(@"deposit_card") forState:UIControlStateNormal];
+        NSString * numberStr2 = @"999999999";
+        float moneyW = [PublicMethod handelWideContent:numberStr2 AndFontsize:16 AndMaxsize:CGSizeMake(10000, 46)];
+        float labelX = (SCREEN_WIDTH - moneyW - 20) / 2;
+        self.moneyLabel.text = numberStr2;
+        self.moneyLabel.frame = CGRectMake(labelX, 67, moneyW, 40);
+        self.eyeButton.frame = CGRectMake(Max_X(_moneyLabel) + 6, 79, 16, 16);
+    }
+}
+-(UILabel *)moneyLabel{
+    if (!_moneyLabel) {
+        _moneyLabel = [[UILabel alloc]init];
+        _moneyLabel.textAlignment = NSTextAlignmentRight;
+        _moneyLabel.font = FONT(16);
+        _moneyLabel.textColor = greenUnifyColor;
+        [self.view addSubview:_moneyLabel];
+    }
+    return _moneyLabel;
+}
+-(UIButton *)eyeButton{
+    if (!_eyeButton) {
+        _eyeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_eyeButton setImage:UIImageName(@"deposit_card") forState:UIControlStateNormal];
+        [_eyeButton addTarget:self action:@selector(eyeButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_eyeButton];
+    }
+    return _eyeButton;
+}
+-(void)goBcke{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+- (IBAction)topUpButtonAction:(id)sender {
+    FBTopUpViewController * topUp = [[FBTopUpViewController alloc]init];
+    [self.navigationController pushViewController:topUp animated:YES];
+}
+@end

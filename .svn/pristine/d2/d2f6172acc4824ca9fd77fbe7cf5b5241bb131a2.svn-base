@@ -1,0 +1,13 @@
+//
+//  FBConfirmOrderViewController.h
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/30.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBBaseViewController.h"
+
+@interface FBConfirmOrderViewController : FBBaseViewController<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong) UITableView * tableView;
+@end

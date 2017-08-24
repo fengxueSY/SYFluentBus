@@ -1,0 +1,289 @@
+//
+//  FBTopUpCardViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//token + @ + 时间戳
+
+#import "FBTopUpCardViewController.h"
+#import "FBTopUpViewController.h"
+#import "CRSA.h"
+#import "Base64.h"
+#import "MyMD5.h"
+#import "NSString+RSA.h"
+
+@interface FBTopUpCardViewController (){
+    NSString * balanceStr;/**<余额，单位：分*/
+    NSString * forzenStr;/**<冻结金额，单位：分*/
+    
+    NSTimer *_timer;//定时器 刷二维码
+    NSInteger _second;
+    float _value;
+}
+@property (weak, nonatomic) IBOutlet UIView *backView;
+@property (weak, nonatomic) IBOutlet UIImageView *disImageView;
+@property (weak, nonatomic) IBOutlet UIButton *topUpButton;
+@property (nonatomic,strong) UILabel * moneyLabel;
+@property (nonatomic,strong) UIButton * eyeButton;
+@property (nonatomic) BOOL isShow;
+@property (nonatomic,strong) NSString * moneyNumber;
+- (IBAction)topUpButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *toUpBut;
+
+@property (nonatomic,strong)UIView *whiteView;
+@property (nonatomic,strong) UIImageView *imageView;
+
+@end
+
+@implementation FBTopUpCardViewController
+
+- (void)dealloc
+{
+    _timer = nil;
+}
+
+- (UIView *)whiteView
+{
+    if (_whiteView ==nil) {
+        
+        _whiteView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _whiteView.backgroundColor = [UIColor whiteColor];
+        _whiteView.userInteractionEnabled = YES;
+        UITapGestureRecognizer * PrivateLetterTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapWhiteView)];
+        PrivateLetterTap.numberOfTouchesRequired = 1; //手指数
+        PrivateLetterTap.numberOfTapsRequired = 1; //tap次数
+        
+        [_whiteView addGestureRecognizer:PrivateLetterTap];
+    }
+    return _whiteView;
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    _value = [UIScreen mainScreen].brightness;
+    //加密后生成二维码
+    [self getSecret];
+    
+    if (_timer) {
+        [_timer fire];
+    } else {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(getSecret) userInfo:nil repeats:YES];
+    }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEndBackGround) name:UIApplicationWillResignActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground) name:UIApplicationDidBecomeActiveNotification object:nil];
+    self.title = @"储值卡";
+    [self httpsData];
+    _isShow = YES;
+    [_toUpBut.layer setMasksToBounds:YES];
+    [_toUpBut.layer setCornerRadius:5];
+    [self.liftButtonItem addTarget:self action:@selector(goBcke) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:self.liftButtonItem];
+    [_topUpButton.layer setMasksToBounds:YES];
+    [_topUpButton.layer setCornerRadius:5];
+    
+    self.disImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer * PrivateLetterTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAvatarView:)];
+    PrivateLetterTap.numberOfTouchesRequired = 1; //手指数
+    PrivateLetterTap.numberOfTapsRequired = 1; //tap次数
+    self.disImageView.contentMode = UIViewContentModeScaleToFill;
+    [self.disImageView addGestureRecognizer:PrivateLetterTap];
+}
+
+#pragma  mark -  二维码处理
+//放大二维码
+- (void)tapAvatarView:(UITapGestureRecognizer *)gesture
+{
+    self.whiteView.alpha =0;
+    _imageView.alpha =0;
+    _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-10, 100, 10, 10)];
+    _imageView.image = self.disImageView.image;
+    [[UIScreen mainScreen] setBrightness:_value];
+    [UIView animateWithDuration:0.5 animations:^{
+        _imageView.height = 250;
+        _imageView.width =250;
+        self.whiteView.alpha =1;
+        _imageView.alpha =1;
+        _imageView.center = self.view.center;
+        [[UIScreen mainScreen] setBrightness:1];
+    }];
+    [self.view addSubview:self.whiteView];
+    [self.view addSubview: _imageView];
+
+}
+
+//缩小二维码
+- (void)tapWhiteView
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        _imageView.frame =CGRectMake(SCREEN_WIDTH/2-10, 100, 10, 10);
+        _imageView.alpha = 0;
+        self.whiteView.alpha = 0;
+        [[UIScreen mainScreen] setBrightness:_value];
+
+    } completion:^(BOOL finished) {
+        [_imageView removeFromSuperview];
+        [_whiteView removeFromSuperview];
+    }];
+}
+
+#pragma mark - 推入后台方法
+
+- (void)willEndBackGround{
+    
+    [_timer invalidate];
+    _timer = nil;
+}
+
+#pragma mark - 推入前台
+
+- (void)willEnterForeground{
+    //加密后生成二维码
+    [self getSecret];
+    
+    if (_timer) {
+        [_timer fire];
+    } else {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(getSecret) userInfo:nil repeats:YES];
+    }
+    
+}
+
+
+-(void)eyeButtonAction{
+    DBLog(@"---------- %@---%@",balanceStr,forzenStr);
+    if (_isShow == NO) {
+        _isShow = YES;
+        [self.eyeButton setImage:UIImageName(@"deposit_card_gray") forState:UIControlStateNormal];
+        NSString * numberStr1 = @"*****";
+        float moneyW = [PublicMethod handelWideContent:numberStr1 AndFontsize:16 AndMaxsize:CGSizeMake(10000, 46)];
+        float labelX = (SCREEN_WIDTH - moneyW - 20) / 2;
+        self.moneyLabel.text = numberStr1;
+        self.moneyLabel.textColor = UIColorFromRGB(0x777777);
+        self.moneyLabel.frame = CGRectMake(labelX, 67, moneyW, 40);
+        self.eyeButton.frame = CGRectMake(Max_X(_moneyLabel) + 6, 67, 40, 40);
+    }else{
+        _isShow = NO;
+        [self.eyeButton setImage:UIImageName(@"deposit_card") forState:UIControlStateNormal];
+        float moneyW = [PublicMethod handelWideContent:balanceStr AndFontsize:16 AndMaxsize:CGSizeMake(10000, 46)];
+        float labelX = (SCREEN_WIDTH - moneyW - 20) / 2;
+        self.moneyLabel.text = balanceStr;
+        _moneyLabel.textColor = greenUnifyColor;
+        self.moneyLabel.frame = CGRectMake(labelX, 67, moneyW, 40);
+        self.eyeButton.frame = CGRectMake(Max_X(_moneyLabel) + 6, 67, 40, 40);
+    }
+}
+-(UILabel *)moneyLabel{
+    if (!_moneyLabel) {
+        _moneyLabel = [[UILabel alloc]init];
+        _moneyLabel.textAlignment = NSTextAlignmentRight;
+        _moneyLabel.font = FONT(16);
+        _moneyLabel.text = @"0.00";
+        [self.view addSubview:_moneyLabel];
+    }
+    return _moneyLabel;
+}
+-(UIButton *)eyeButton{
+    if (!_eyeButton) {
+        _eyeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_eyeButton setImage:UIImageName(@"deposit_card") forState:UIControlStateNormal];
+        [_eyeButton addTarget:self action:@selector(eyeButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_eyeButton];
+    }
+    return _eyeButton;
+}
+-(void)httpsData{
+    [MBProgressHUD showMessage:@"刷新中..." toView:self.view];
+    [OCNetworkingTool POSTWithUrl:walletQueryfast() withParams:nil success:^(id responseObject) {
+        NSDictionary * dic = (NSDictionary *)responseObject;
+        NSDictionary * dataDic = [dic objectForKey:@"data"];
+        balanceStr = [NSString stringWithFormat:@"%.2f",[[dataDic objectForKey:@"balance"] floatValue] / 100];
+        forzenStr = [NSString stringWithFormat:@"%.2f",[[dataDic objectForKey:@"forzen"] floatValue] / 100];
+        _moneyLabel.text = balanceStr;
+        [self eyeButtonAction];
+        [MBProgressHUD hideHUDForView:self.view];
+    } fail:^(NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view];
+    }];
+}
+
+-(void)goBcke{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+- (IBAction)topUpButtonAction:(id)sender {
+    FBTopUpViewController * topUp = [[FBTopUpViewController alloc]init];
+    [self.navigationController pushViewController:topUp animated:YES];
+}
+
+
+#pragma mark -  加密
+//拿到膜和指数，并进行加密
+-(void)getSecret
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    
+    [dict setValue:[UserInfo userInfoWithUserDefaults].userName forKey:@"UserName"];
+    [OCNetworkingTool POSTWithUrl:getLoginKey() withParams:dict success:^(id responseObject) {
+        
+        DBLog(@"%@",responseObject);
+        NSDictionary *data =responseObject[@"data"];
+        NSString *secret = data[@"secret"];
+        NSArray *temp=[secret componentsSeparatedByString:@"-"];
+        NSLog(@"%@,%@",temp[0],temp[1]);
+        
+        //获取当前时间戳
+        NSDate *currentDate = [PublicMethod getLocalCurrentDate];
+        long currentSeconds = [PublicMethod getSecondsWithDate:currentDate];
+        NSString *mycurrentSeconds = [NSString stringWithFormat:@"%ld000",currentSeconds];
+        
+        NSString *rsaStr = [NSString stringWithFormat:@"%@@%@",[UserInfo userInfoWithUserDefaults].userTokenId,mycurrentSeconds];
+        NSLog(@"%@",rsaStr);
+        
+        NSString *RSAString =  [NSString setPublicKey:[rsaStr UTF8String] Mod:[temp[1] UTF8String] Exp:[temp[0] UTF8String]];
+        
+        self.disImageView.image = [self generateQrCodeWithInfo:RSAString];
+        self.imageView.image = self.disImageView.image;
+    } fail:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"获取二维码失败，请检查网络"];
+    }];
+}
+
+#pragma mark - 生产二维码
+- (UIImage *)generateQrCodeWithInfo:(NSString *)info {
+    // 创建滤镜
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setDefaults];
+    
+    NSData *qrcodeData = [info dataUsingEncoding:NSUTF8StringEncoding];
+    // 设置数据
+    [filter setValue:qrcodeData forKey:@"inputMessage"];
+    CIImage *outputImage = filter.outputImage;
+    UIImage *qrCodeImage = [self scaleImage:outputImage];
+    if (qrCodeImage == nil) {
+        return nil;
+    }
+    return qrCodeImage;
+}
+
+- (UIImage *)scaleImage:(CIImage *)ciImage {
+    // 创建放大的系数
+    CGAffineTransform transform = CGAffineTransformMakeScale(5, 5);
+    // 根据放大系数放大图片
+    CIImage *newImage = [ciImage imageByApplyingTransform:transform];
+    
+    return [UIImage imageWithCIImage:newImage];
+}
+
+@end

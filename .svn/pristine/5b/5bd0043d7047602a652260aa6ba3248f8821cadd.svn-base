@@ -1,0 +1,243 @@
+//
+//  FBMyTicketDetailedViewController.m
+//  FluentBus
+//
+//  Created by 张俊辉 on 16/12/29.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBMyTicketDetailedViewController.h"
+#import "FBRouteViewController.h"
+#import "FBTicketDetailListModel.h"
+#import "JF_CalendarView.h"
+
+@interface FBMyTicketDetailedViewController ()<JF_CalendarViewDelegate>
+{
+    FBTicketDetailListModel *_myTicketDetailModel;
+}
+
+@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *startAddressLb;
+@property (weak, nonatomic) IBOutlet UILabel *endAddressLb;
+@property (weak, nonatomic) IBOutlet UILabel *timeLB;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLB;
+@property (weak, nonatomic) IBOutlet UILabel *goThourthLB;
+@property (weak, nonatomic) IBOutlet UILabel *setoutTimeLB;
+@property (weak, nonatomic) IBOutlet UILabel *platnoLB;
+@property (weak, nonatomic) IBOutlet UILabel *visableDataAndCount;
+@property (weak, nonatomic) IBOutlet UILabel *goOnStationLB;
+@property (weak, nonatomic) IBOutlet UILabel *ticketTypeLb;
+
+@property(nonatomic,strong) JF_CalendarView *calendarView;
+//自定义View
+@property (nonatomic,strong) UIView *blackView;
+
+@end
+
+@implementation FBMyTicketDetailedViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //导航栏处理
+    [self setUpNav];
+    
+    [MBProgressHUD showMessage:nil];
+    //获取车票详情信息
+    [self getTicketDetail];
+}
+
+//UI处理
+- (void)setUpNav
+{
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.title = @"车票详情";
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_icon_nav" target:self action:@selector(toMap)];
+    
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithImageName:@"common_nav_back" target:self action:@selector(goBack)];
+}
+
+- (void)getTicketDetail
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:_model.orderId forKey:@"orderId"];
+    
+    [OCNetworkingTool POSTWithUrl:userTicketDetails() withParams:params success:^(id responseObject) {
+        DBLog("%@",[PublicMethod jsEncapsulateWithDictionary:(NSDictionary *)responseObject]);
+        if ([responseObject[@"code"] integerValue] == 200) {
+            NSDictionary *dic = responseObject[@"data"];
+            FBTicketDetailListModel *detailModel = [FBTicketDetailListModel new];
+            detailModel.orderId = dic[@"orderId"];
+            detailModel.productId = dic[@"productId"];
+            detailModel.routeId = dic[@"routeId"];
+            detailModel.classId = dic[@"classId"];
+            detailModel.staName = dic[@"staName"];
+            detailModel.endName = dic[@"endName"];
+            NSString *timeStr = [NSString stringWithFormat:@"%@",dic[@"validDate"]];
+            if (timeStr.length >=10) {
+                timeStr = [timeStr substringToIndex:[timeStr length] - 3];
+            }
+            detailModel.validDate = [self getTime:timeStr];
+            detailModel.dayCount = [NSString stringWithFormat:@"%@",dic[@"dayCount"]];
+            detailModel.classTime = dic[@"classTime"];
+            detailModel.upStationName =dic[@"upStationName"];
+            detailModel.productType = [dic[@"productType"] integerValue];
+            detailModel.productTypeName = dic[@"productTypeName"];
+            detailModel.platNo = dic[@"platNo"];
+            detailModel.ticket = dic[@"ticket"];
+            detailModel.rdesc = [NSString stringWithFormat:@"途径:%@",dic[@"rdesc"]];
+            detailModel.ralen = [NSString stringWithFormat:@"约%.2f公里",[dic[@"ralen"] integerValue]/1000.0];
+            detailModel.putime = [NSString stringWithFormat:@"约%@分钟",dic[@"putime"]];
+            detailModel.dateList = dic[@"dateList"];
+            _myTicketDetailModel = detailModel;
+            
+            [self setValueToControlWithModel:detailModel];
+        }
+    } fail:^(NSError *error) {
+        
+    }];
+}
+
+//赋值
+-(void)setValueToControlWithModel:(FBTicketDetailListModel *) detailModel
+{
+    _startAddressLb.text = detailModel.staName;
+    _endAddressLb.text = detailModel.endName;
+    _setoutTimeLB.text = detailModel.classTime;
+    
+    _goOnStationLB.text = detailModel.upStationName;
+    _platnoLB.text = detailModel.platNo;
+    _visableDataAndCount.text = [NSString stringWithFormat:@"%@ 共%@天",detailModel.validDate,detailModel.dayCount];
+    _distanceLB.text = detailModel.ralen;
+    _timeLB.text = detailModel.putime;
+    _goThourthLB.text = detailModel.rdesc;
+    
+    if (StringNotNilAndNull(detailModel.productTypeName)) {
+        _ticketTypeLb.text = [NSString stringWithFormat:@" %@    ",detailModel.productTypeName];
+    }else{
+        _ticketTypeLb.text = @" 暂无    ";
+    }
+    _topImageView.image = [self generateQrCodeWithInfo:detailModel.ticket];
+    
+    [UIView setViewCorner:_ticketTypeLb cornerRadius:2 borderWidth:1 colorRGB:(0xff4d64)];
+    
+    [MBProgressHUD hideHUD];
+}
+
+- (void)goBack{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+//地图跳转
+-(void)toMap
+{
+    FBRouteViewController *routeCtl = [[FBRouteViewController alloc]init];
+    routeCtl.viewStyle = @"3";
+    routeCtl.ticketListmodel = _myTicketDetailModel;
+    [self.navigationController pushViewController:routeCtl animated:YES];
+}
+
+#pragma mark - 私有方法
+//去掉毫秒后的时间
+-(NSString *)getTime:(NSString *)time{
+    NSDate  *localeDate = [NSDate dateWithTimeIntervalSince1970:[time integerValue]];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
+    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+    NSString *strDate = [dateFormatter stringFromDate:localeDate];
+    
+    return strDate;
+}
+//去掉毫秒后的时间
+-(NSString *)getTimeb:(NSString *)time{
+    NSDate  *localeDate = [NSDate dateWithTimeIntervalSince1970:[time integerValue]];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+    NSString *strDate = [dateFormatter stringFromDate:localeDate];
+    
+    return strDate;
+}
+
+#pragma mark - 生产二维码
+- (UIImage *)generateQrCodeWithInfo:(NSString *)info {
+    // 创建滤镜
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setDefaults];
+    
+    NSData *qrcodeData = [info dataUsingEncoding:NSUTF8StringEncoding];
+    // 设置数据
+    [filter setValue:qrcodeData forKey:@"inputMessage"];
+    CIImage *outputImage = filter.outputImage;
+    UIImage *qrCodeImage = [self scaleImage:outputImage];
+    if (qrCodeImage == nil) {
+        return nil;
+    }
+    return qrCodeImage;
+}
+
+- (UIImage *)scaleImage:(CIImage *)ciImage {
+    // 创建放大的系数
+    CGAffineTransform transform = CGAffineTransformMakeScale(5, 5);
+    // 根据放大系数放大图片
+    CIImage *newImage = [ciImage imageByApplyingTransform:transform];
+    
+    return [UIImage imageWithCIImage:newImage];
+}
+
+//打开日历
+- (IBAction)onClickCandarBtn:(id)sender {
+    
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
+    layout.minimumInteritemSpacing=0;
+    self.calendarView=[[JF_CalendarView alloc]initWithFrame:CGRectMake(0, 30, 300, 350) collectionViewLayout:layout];
+    self.calendarView.myDelegate = self;
+    
+    NSMutableArray *calendarArray = [NSMutableArray array];
+    if (ArrayNotNilAndNull(_myTicketDetailModel.dateList)) {
+        for (NSNumber *timeNum in _myTicketDetailModel.dateList) {
+            NSString *timeStr = [NSString stringWithFormat:@"%@",timeNum];
+            if (timeStr.length >=10) {
+                timeStr = [timeStr substringToIndex:[timeStr length] - 3];
+                [calendarArray addObject: [self getTimeb:timeStr]];
+            }
+        }
+    }
+    [self.calendarView.registerArr addObjectsFromArray:[calendarArray copy]];
+    //  self.calendarView.backgroundColor=[UIColor purpleColor];
+    self.calendarView.center=self.view.center;
+    self.calendarView.y = self.calendarView.y-64;
+    [self.view addSubview:self.blackView];
+    [self.view addSubview:self.calendarView];
+}
+
+//日历关闭回调
+-(void)toClosecalendarView
+{
+    [self.blackView removeFromSuperview];
+    [self.calendarView removeFromSuperview];
+}
+
+- (UIView *)blackView
+{
+    if (_blackView ==nil) {
+        
+        _blackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _blackView.backgroundColor = [UIColor blackColor];
+        _blackView.alpha = 0.3;
+    }
+    return _blackView;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

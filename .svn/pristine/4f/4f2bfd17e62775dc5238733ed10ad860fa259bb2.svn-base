@@ -1,0 +1,22 @@
+//
+//  FBTopUpMidView.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/31.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBTopUpMidView.h"
+
+@implementation FBTopUpMidView
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+//        NSString * str = @"同意《畅吧用户订票协议》";
+//        NSDictionary * dic = @{@"placeNmuberArray":@[@"3",@"11",@"12"],@"colorArray":@[oneHeadingColor,blueUnifyColor,oneHeadingColor],@"fontArray":@[@"12",@"12",@"12"]};
+//        NSMutableAttributedString * att = [PublicMethod editString:str Dic:dic];
+//        self.conLabel.attributedText = att;
+    }
+    return self;
+}
+@end

@@ -1,0 +1,324 @@
+//
+//  PublicMethod.h
+//  NetworkCommunicationLayer
+//
+//  Created by GentryShen on 16/6/11.
+//  Copyright © 2016年 GentryShen. All rights reserved.
+//
+
+#import "FBTranslator.h"
+#import <CommonCrypto/CommonHMAC.h>
+#import <Foundation/Foundation.h>
+#import <MAMapKit/MAMapKit.h>
+#import <UIKit/UIKit.h>
+#import <SystemConfiguration/CaptiveNetwork.h> 
+#import <SystemConfiguration/SystemConfiguration.h>
+#import "AFNetworkReachabilityManager.h"
+#import "AFNetworking.h"
+@interface PublicMethod : NSObject
+
+#pragma mark - 处理按钮
+
+/* 处理白色按钮 */
++ (void)dealWithWhiteButtonForGrayClickShadow:(UIButton *)button;
++ (UIImage *)imageWithColor:(UIColor *)color;
+
+#pragma mark - 设备信息
+/* 设备信息 */
++ (NSString *)device;
+
+#pragma mark - 返回按钮
+/* 返回按钮 */
++ (UIBarButtonItem *)backButton;
+
+#pragma mark - 视图边框
+/* 视图边框 */
++ (void)border:(UIView *)view;
+
+#pragma mark - 视图圆角
+/* 视图圆角 */
++ (void)cornerRadius:(UIView *)view;
+/* 视图圆角 */
++ (void)dealWithView:(UIView *)view cornerRadius:(CGFloat)radius;
+
+#pragma mark - 常用进制转换
+
+/* 二进制 -> 十进制 */
++ (NSString *)binaryToDecimal:(NSString *)binary;
+/* 二进制 -> 八进制 */
++ (NSString *)binaryToQ:(NSString *)binary;
+/* 二进制 -> 十六进制 */
++ (NSString *)binaryToHex:(NSString *)binary;
+
+/* 八进制 -> 二进制 */
++ (NSString *)qToBinary:(NSString *)q;
+/* 八进制 -> 十进制 */
++ (NSString *)qToDecimal:(NSString *)q;
+/* 八进制 -> 十六进制 */
++ (NSString *)qToHex:(NSString *)q;
+
+/* 十进制 -> 二进制 */
++ (NSString *)decimalToBinary:(NSUInteger)tmpid;
+/* 十进制 -> 八进制 */
++ (NSString *)decimalToQ:(NSUInteger)tmpid;
+/* 十进制 -> 十六进制 */
++ (NSString *)decimalToHex:(NSUInteger)tmpid;
+
+/* 十六进制 -> 二进制 */
++ (NSString *)hexToBinary:(NSString *)hex;
+/* 十六进制 -> 八进制 */
++ (NSString *)hexToQ:(NSString *)hex;
+/* 十六进制 -> 十进制 */
++ (NSString *)hexToDecimal:(NSString *)hex;
+
+#pragma mark - 对两个相等长度的字符串进行异或运算
+/* 对两个相等长度的字符串进行异或运算 */
++ (NSString *)pinxCreator:(NSString *)pan withPinv:(NSString *)pinv;
++ (int)charToint:(char)tempChar;
+
+#pragma mark - 十六进制字符串转十六进制字节流
+/* 十六进制字符串转十六进制字节流 */
++ (NSData *)hexStringToHexData:(NSString *)hex;
+
+#pragma mark - 十六进制字节流转十六进制字符串
+/* 十六进制字节流转十六进制字符串 */
++ (NSString *)hexDataToHexString:(NSData *)hex;
+
+#pragma mark - 十六进制GBK字符串转普通字符串
+/* 十六进制GBK字符串转普通字符串 */
++ (NSString *)hexGBKStringToNormalString:(NSString *)string;
+
+#pragma mark - 截取字符串中间部分
+/* 截取字符串中间部分 */
++ (NSString *)interceptMiddleString:(NSString *)string head:(NSUInteger)head andTail:(NSUInteger)tail;
+
+#pragma mark - 十六进制ASCII字符串转普通字符串
+/* 十六进制ASCII字符串转普通字符串 */
++ (NSString *)hexASCIIStringToNormalString:(NSString *)string;
+
+#pragma mark - 十六进制字符串转十进制字符串
+/* 十六进制字符串转十进制字符串 */
++ (NSString *)hexStringToDecimalString:(NSString *)string;
+
+#pragma mark - 判断字符串为空
++ (BOOL)isBlankString:(NSString *)str;
+
+#pragma mark - 装载地图
+/* 装载地图 */
++ (MAMapView *)loadMapInView:(UIView *)view;
+
+#pragma mark - 配置地图
+/* 配置地图 */
++ (void)configMap:(MAMapView *)map;
+
+#pragma mark - SHA1加密
+/* SHA1 */
++ (NSString *)sha1:(NSString *)input;
+
+
+#pragma mark - Json封装
+/* JsonEncapsulate */
++ (NSString *)jsonEncapsulateWithDictionary:(NSDictionary *)dict;
+
+#pragma mark - Json解析
+/* JsonParse */
++ (NSDictionary *)jsonParseWithData:(NSData *)data;
+
+#pragma mark - 编码URL
+/* EncodeUrl */
++ (NSString *)encodeUrl:(NSString *)url;
+
+#pragma mark - 解码URL
+/* DecodeUrl */
++ (NSString *)decodeUrl:(NSString *)url;
+
+#pragma mark - NSDictionary转为base64字符串
+/* NSDictionary转为base64字符串 */
++ (NSString *)getBase64StringWithDictionary:(NSDictionary *)dic;
+
+#pragma mark - 对比两个时间
++(int)compareDate:(NSString*)date01 withDate:(NSString*)date02;
+
+#pragma mark - 根据完整的电话号码获取缩略的电话号码
+/* 根据完整的电话号码获取缩略的电话号码 */
++ (NSString *)getThumbnailMobileWithCompleteMobile:(NSString *)mobile;
+
+#pragma mark - 根据生日获取年龄
+/* 根据生日获取年龄 */
++ (NSString *)getAgeWithBirthday:(NSString *)birthday;
+
+#pragma mark - 获取设备系统版本
+/* 获取设备系统版本 */
++ (NSString *)systemVersion;
+
+#pragma mark - 获取文档路径
+/* 获取文档路径 */
++ (NSString *)getDocumentPath;
+
+#pragma mark - 归档模型数据
+/* 归档模型数据 */
++ (void)archiverModelData:(id)modelData withModelName:(NSString *)modelName;
+
+#pragma mark - 解档模型数据
+/* 解档模型数据 */
++ (id)unArchiverModelDataWithModelName:(NSString *)modelName;
+
+#pragma mark - 获取label的高度
+/*
+ *计算Label高度
+ */
++(float)getLabelHeight:(float)width fontSize:(float)fontSize text:(NSString*)text;
+
+//计算label宽度
++(float)getLabelWidth:(float)height fontSize:(float)fontSize text:(NSString *)text;
+
+#pragma mark - 判断网络正常与否
+
++(BOOL)isNetworkEnabled;
+//获取WiFi ssid
++ (NSString *)getWifiSSID;
+
++ (void)observeCurrentNetStatus;
+
++ (NSString *)jsEncapsulateWithDictionary:(NSDictionary *)dict;
+
+
+#pragma mark -------------- 时间的处理 --------------
+/**
+ *  计算某个时间点距离当前时间的时间差
+ *
+ *  @param stime 要计算的某个时间
+ *
+ *  @return 返回时间差
+ */
++ (NSString *)CalculationTimeWith:(NSString *)stime;
+/**
+ *  获取当前时间
+ *
+ *  @return 当前时间字符串
+ */
++ (NSString *)getCurrentTime;
+/**
+ *  秒数转成本地时间 yyyy-MM-dd HH:mm:ss
+ *
+ *  @param totalSeconds 要转换的秒数
+ *
+ *  @return 转换后的时间
+ */
++ (NSString *)timeFormatted:(NSInteger)totalSeconds;
+/**
+ *  格林尼治时间时间转本地时间
+ *
+ *  @param GMTDate 格林尼治时间
+ *
+ *  @return 转换后的本地时间
+ */
++ (NSDate *)convertGMTDatetoLocalDate:(NSDate *)GMTDate;
+/**
+ *  根据时间日期获取时间戳
+ *
+ *  @param date 日期
+ *
+ *  @return 时间戳
+ */
++(NSTimeInterval)getSecondsWithDate:(NSDate *)date;
+/**
+ *  日期转换为日期字符串
+ *
+ *  @param date 日期
+ *
+ *  @return 日期字符串
+ */
++ (NSString *)dateToDateString:(NSDate *)date;
+/**
+ *  日期字符串转换为日期
+ *
+ *  @param time   日期字符串
+ *  @param format 转为日期的格式
+ *
+ *  @return 日期
+ */
++ (NSDate *)dateWithString:(NSString *)time format:(NSString *)format;
+/**
+ *  获取本地当前时间
+ *
+ *  @return 当前时间
+ */
++ (NSDate *)getLocalCurrentDate;
+/**
+ *  获取当前时间戳
+ *
+ *  @return 当前时间戳
+ */
++ (NSString *)getTimeInterval;
+/**
+ *  获取当前年份
+ *
+ *  @return 当前年份
+ */
++ (NSInteger)getCurrentYear;
+/**
+ *  获取当前月份
+ *
+ *  @return 当前月份
+ */
++ (NSInteger)getCurrentMonth;
+/**
+ *  获取毫秒数
+ *
+ *  @return 当前毫秒数
+ */
++ (NSInteger)getCurrentMillisecond;
+/**
+ *  获取day天后的日期(若day为负数,则为|day|天前的日期)
+ *
+ *  @param day day
+ *
+ *  @return 时间
+ */
++ (NSDate *)dateAfterDay:(int)day;
+
+#pragma mark -------------- 字符串操作 --------------
+/**
+ *  判断字符串是否为整形
+ *
+ *  @param string 要判断的字符串
+ *
+ *  @return 是否为整形
+ */
++(BOOL)isPureInt:(NSString *)string;
+/**
+ *  判断字符串是否为浮点型
+ *
+ *  @param string 要判断的字符串
+ *
+ *  @return 是否为浮点型
+ */
++(BOOL)isPureFloat:(NSString *)string;
+/**
+ *  返回分隔成两段的字符串，前后字体大小颜色均可不同
+ *
+ *  @param editStr     要编辑的字符串
+ *  @param placeNumber 分割点
+ *  @param precedFont  前面部分的字体大小
+ *  @param precedColor 前面部分的字体颜色
+ *  @param backFont    后面部分的字体大小
+ *  @param backColor   后面部分的字体颜色
+ *
+ *  @return 编辑完成的字符串
+ */
++(NSMutableAttributedString *)editString:(NSString *)editStr CarvePlace:(int)placeNumber PrecedFont:(CGFloat)precedFont PrecedColor:(UIColor *)precedColor BackFont:(CGFloat)backFont BackColor:(UIColor *)backColor;
+/**
+ *根据文字的大小和确定高度 返回宽度
+ */
++(float)handelWideContent:(NSString *)content AndFontsize:(NSUInteger)font AndMaxsize:(CGSize )size;
+/**
+ *根据文字的大小和确定的宽度 返回高度
+ */
++(float)handelHighContent:(NSString *)content AndFontsize:(UIFont *)font AndMaxsize:(CGSize )size;
+#pragma mark -------------- delete http --------------
+/**
+ *  删除 http
+ */
++(void)deleteHttpAFNetworkingUrl:(NSString *)url Parameter:(id)parameter Success:(void(^)(id successed))success Fail:(void(^)(id failed))fail;
+@end

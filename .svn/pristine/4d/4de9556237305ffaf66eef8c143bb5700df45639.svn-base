@@ -1,0 +1,42 @@
+//
+//  FBMyTicketListModel.h
+//  FluentBus
+//
+//  Created by 张俊辉 on 17/1/13.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface FBMyTicketListModel : NSObject
+//订单ID
+@property (nonatomic,copy) NSString *orderId;
+//产品ID
+@property (nonatomic,copy) NSString *productId;
+//线路ID
+@property (nonatomic,copy) NSString *routeId;
+//排班ID
+@property (nonatomic,copy) NSString *classId;
+//起始站
+@property (nonatomic,copy) NSString *staName;
+//终点站
+@property (nonatomic,copy) NSString *endName;
+//运营范围(long)
+@property (nonatomic,copy) NSString *validDate;
+//天数(short)
+@property (nonatomic,copy) NSString *dayCount;
+//出行时间点
+@property (nonatomic,copy) NSString *time;
+//上车地点
+@property (nonatomic,copy) NSString *upStationName;
+//产品类型(1周票，2月票，3季票，4次票)(short)
+@property (nonatomic,assign) NSInteger productType;
+//车牌
+@property (nonatomic,copy) NSString *platNo;
+//车票
+@property (nonatomic,copy) NSString *ticket;
+//车票类型
+@property (nonatomic,copy) NSString *productTypeName;
+//日历数组
+@property (nonatomic,copy) NSArray * dateList;
+@end

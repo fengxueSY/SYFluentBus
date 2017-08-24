@@ -1,0 +1,299 @@
+//
+//  FBOrderViewController.m
+//  FluentBus
+//
+//  Created by 666GPS on 2016/12/28.
+//  Copyright © 2016年 yang. All rights reserved.
+//
+
+#import "FBOrderViewController.h"
+#import "FBOrderCell.h"
+#import "FBOrderHeadView.h"
+#import "FBRouteViewController.h"
+#import "FBSearchTableView.h"
+#import "FBOrderModel.h"
+#import "FBOrderProductsModel.h"
+#import "FBOrderProductsShiftsModel.h"
+#import "FBDefaultImageView.h"
+static NSString * HeaderID = @"header";
+@interface FBOrderViewController ()<UISearchBarDelegate,FBSearchTableViewDelegate>{
+    EMSearchBar * _searchBar;
+    NSMutableArray * dataArray;//数据源
+    CGFloat cellH;
+    int page;
+    NSMutableArray * _countNmberArray;//每个组中cell的个数
+}
+@property (nonatomic,strong) FBSearchTableView * searchTableView;
+@property (nonatomic,strong) FBDefaultImageView * defaultImageView;
+
+@end
+
+@implementation FBOrderViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _countNmberArray = [[NSMutableArray alloc]init];
+    dataArray = [[NSMutableArray alloc]init];
+    [self creatBaseTabelView];
+    page = 1;
+    [self getData:@"1"];
+}
+-(void)getData:(NSString *)page1{
+    [MBProgressHUD showMessage:@"刷新中..." toView:self.view];
+    [FBOrderModel getOrderListParameter:[NSNumber numberWithInt:[page1 intValue]] Success:^(id successed) {
+        [MBProgressHUD hideHUDForView:self.view];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+        if ([page1 intValue] == 1) {
+            [dataArray removeAllObjects];
+             dataArray = [[NSMutableArray alloc]initWithArray:(NSArray *)successed];
+        }else{
+            NSArray * array = (NSArray *)successed;
+            [dataArray arrayByAddingObjectsFromArray:array];
+        }
+        [_countNmberArray removeAllObjects];
+        for (int i = 0; i < dataArray.count; i++) {
+//订购列表默认打开
+//            FBOrderModel * model = dataArray[i];
+//            [_countNmberArray addObject:[NSString stringWithFormat:@"%ld",model.products.count]];
+
+//订购列表默认关闭
+            [_countNmberArray addObject:[NSString stringWithFormat:@"0"]];
+        }
+        if (dataArray.count <= 0) {
+            [self showDefaultImageView];
+        }else{
+            [self hideDefaultImageView];
+        }
+        [_tableView reloadData];
+    } Fail:^(id failed) {
+        [MBProgressHUD hideHUDForView:self.view];
+        TTAlert1(failed, self);
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+    }];
+}
+-(void)creatBaseTabelView{
+    _searchBar = [[EMSearchBar alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 40)];
+    _searchBar.backgroundColor = UIColorFromRGB(0xEDF2F5);
+    _searchBar.placeholder = @"站点搜索";
+    _searchBar.delegate = self;
+    [self.view addSubview:_searchBar];
+    
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, SCREEN_WIDTH, SCREEN_HEIGHT - 150) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.backgroundColor = backCommonlyUsedColor;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.mj_header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshAction)];
+    _tableView.mj_footer = [MJRefreshFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshAction)];
+    [self.view addSubview:_tableView];
+     [_tableView registerNib:[UINib nibWithNibName:@"FBOrderHeadView" bundle:nil] forHeaderFooterViewReuseIdentifier:HeaderID];
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return dataArray.count;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    FBOrderModel * model = dataArray[section];
+//    return model.products.count;
+    return [_countNmberArray[section] integerValue];
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50 + cellH;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    FBOrderModel * model = dataArray[section];
+    NSString * lengStr = nil;
+    for (int i = 0; i < model.stations.count; i++) {
+        if (i == 0) {
+            lengStr = model.stations[0];
+        }else{
+            lengStr = [NSString stringWithFormat:@"%@ - %@",lengStr,model.stations[i]];
+        }
+    }
+    CGFloat headerH = [PublicMethod handelHighContent:lengStr AndFontsize:FONT(14) AndMaxsize:CGSizeMake(SCREEN_WIDTH - 16, 1000)];
+    if (lengStr == 0) {
+        return 91;
+    }
+    return 91 + headerH;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    FBOrderModel * model = dataArray[section];
+    FBOrderHeadView * headV = [[[NSBundle mainBundle]loadNibNamed:@"FBOrderHeadView" owner:self options:0]lastObject];
+    [headV setListModel:model];
+    headV.userInteractionEnabled = YES;
+    headV.tag = section + 190000;
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeSectionNumberAction:)];
+    [headV addGestureRecognizer:tap];
+    return headV;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellID = @"ID";
+    BOOL isRes = NO;
+    if (!isRes) {
+        [_tableView registerNib:[UINib nibWithNibName:@"FBOrderCell" bundle:nil] forCellReuseIdentifier:cellID];
+    }
+    FBOrderCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    FBOrderModel * model = dataArray[indexPath.section];
+    FBOrderProductsModel * productsModel = model.products[indexPath.row];
+    [cell setProductsModel:productsModel];
+    NSInteger cellN = [self calculateCellHeight:productsModel.shifts.count];
+    cellH = cellN * 70;
+    cell.selectBlock = ^(FBOrderProductsShiftsModel * selectModel){
+        FBRouteViewController * route = [[FBRouteViewController alloc]init];
+        route.viewStyle = @"2";
+        if (selectModel.stationRid == nil) {
+            TTAlert1(@"数据获取失败，请刷新本页数据", self);
+            return;
+        }
+        route.productsShiftsModel = selectModel;
+        [self.navigationController pushViewController:route animated:YES];
+    };
+   
+    return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    FBRouteViewController * route = [[FBRouteViewController alloc]init];
+//    route.viewStyle = @"2";
+//    [self.navigationController pushViewController:route animated:YES];
+}
+-(void)changeSectionNumberAction:(UITapGestureRecognizer *)sender{
+    NSInteger a = sender.view.tag - 190000;
+    if ([_countNmberArray[a] integerValue] != 0) {
+        [_countNmberArray replaceObjectAtIndex:a withObject:@"0"];
+    }else{
+        FBOrderModel * model = dataArray[a];
+        [_countNmberArray replaceObjectAtIndex:a withObject:[NSString stringWithFormat:@"%ld",model.products.count]];
+    }
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:a] withRowAnimation:UITableViewRowAnimationFade];
+
+}
+#pragma mark - 计算cell的高
+-(NSInteger)calculateCellHeight:(NSInteger)allNumber{
+    NSInteger a = allNumber % 4;
+    NSInteger b = allNumber / 4;
+    if (a == 0) {
+        return b;
+    }else{
+        return b + 1;
+    }
+}
+#pragma mark - searchBar DELEGATE
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    _searchBar.text = nil;
+    [_searchBar resignFirstResponder];
+    [self getData:@"1"];
+    [self hideSearchTabelView];
+}
+-(void)searchBarTextDidBeginEditing:(UISearchBar*)searchBar{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    UIButton *btn=[searchBar valueForKey:@"_cancelButton"];
+    [btn setTitle:@"取消" forState:UIControlStateNormal];
+    [self showSearchTableView];
+}
+//获取搜索框改变后的字符
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    [MBProgressHUD showMessage:@"刷新中..." toView:self.view];
+    [FBOrderModel queryStationName:@{@"stationName":searchText} Success:^(id successed) {
+        self.searchTableView.dataArray = (NSArray *)successed;
+        [self.searchTableView reloadInTableView];
+        [MBProgressHUD hideHUDForView:self.view];
+    } Fail:^(id failed) {
+        [MBProgressHUD hideHUDForView:self.view];
+        [MBProgressHUD showError:failed];
+    }];
+}
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    DBLog(@"点击搜索按钮");
+}
+#pragma mark - 搜索界面
+-(void)chooseItemText:(FBOrderModel *)ietmModel{
+    [MBProgressHUD showMessage:nil];
+    _searchBar.text = ietmModel.name;
+    NSDictionary * sendDic = @{@"stationid":ietmModel.stationId};
+    [FBOrderModel searchOrderListParameter:sendDic Success:^(id successed) {
+        [MBProgressHUD hideHUD];
+        dataArray = (NSArray *)successed;
+        for (int i = 0; i < dataArray.count; i++) {
+            //订购列表默认打开
+            //            FBOrderModel * model = dataArray[i];
+            //            [_countNmberArray addObject:[NSString stringWithFormat:@"%ld",model.products.count]];
+            
+            //订购列表默认关闭
+            [_countNmberArray addObject:[NSString stringWithFormat:@"0"]];
+        }
+        [_tableView reloadData];
+    } Fail:^(id failed) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:failed];
+    }];
+    [self hideSearchTabelView];
+}
+-(void)showSearchTableView{
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.tabBarController.tabBar setHidden:YES];
+        self.searchTableView.frame = CGRectMake(0, 104, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }];
+}
+-(void)hideSearchTabelView{
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.tabBarController.tabBar setHidden:NO];
+        self.searchTableView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }];
+}
+#pragma mark -  默认图标
+-(FBDefaultImageView *)defaultImageView{
+    if (!_defaultImageView) {
+        _defaultImageView = [[FBDefaultImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) Text:@"无数据" MakeRange:0 TextColor:UIColorFromRGB(0x888888)];
+        _defaultImageView.userInteractionEnabled = YES;
+        [self.view addSubview:_defaultImageView];
+    }
+    return _defaultImageView;
+}
+//是否显示无车票的默认界面
+-(void)showDefaultImageView{
+    self.defaultImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+-(void)hideDefaultImageView{
+    [self.defaultImageView removeFromSuperview];
+}
+
+#pragma mark - 增加上拉以及下拉刷新
+//下拉刷新
+-(void)headerRefreshAction{
+    [self getData:@"1"];
+}
+//上拉刷新
+-(void)footerRefreshAction{
+    if (dataArray.count < 20) {
+        [MBProgressHUD showError:@"已经是最后一页了"];
+    }else{
+
+        NSInteger b = dataArray.count % 20;
+        if (b == 0) {
+            [self getData:[NSString stringWithFormat:@"%d",page + 1]];
+            page = page + 1;
+
+        }else{
+            [MBProgressHUD showError:@"已经是最后一页了"];
+        }
+        
+    }
+}
+-(FBSearchTableView *)searchTableView{
+    if (!_searchTableView) {
+        _searchTableView = [[FBSearchTableView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _searchTableView.delegate = self;
+        _searchTableView.backgroundColor = [UIColor redColor];
+        [self.view addSubview:_searchTableView];
+    }
+    return _searchTableView;
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
